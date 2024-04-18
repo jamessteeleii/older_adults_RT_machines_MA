@@ -1,0 +1,75 @@
+---
+title: "Diagnostic Plots"
+format:
+  pdf:
+    documentclass: report
+    toc: false
+    number-sections: false
+    highlight-style: github
+    fig-width: 10
+    fig-height: 10
+---
+# Function Model
+## $\hat{R}$
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+
+targets::tar_load(rhat_model_function)
+
+rhat_model_function 
+
+
+```
+
+## Trace plots
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+
+targets::tar_load(trace_model_function)
+
+trace_model_function
+
+```
+
+## Posterior predictive check
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+
+targets::tar_load(pp_check_model_function)
+
+pp_check_model_function
+
+```
+
+# Strength Model
+## $\hat{R}$
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+
+targets::tar_load(rhat_model_strength)
+
+rhat_model_strength 
+
+
+```
+
+## Trace plots
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+
+targets::tar_load(trace_model_strength)
+
+trace_model_strength
+
+```
+
+## Posterior predictive check
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+
+targets::tar_load(pp_check_model_strength)
+
+pp_check_model_strength
+
+```
+

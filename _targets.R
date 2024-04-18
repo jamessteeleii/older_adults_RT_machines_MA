@@ -19,13 +19,13 @@ tar_option_set(
     "rstan",
     "brms",
     "tidybayes",
-    # "bayesplot",
+    "bayesplot",
     "marginaleffects",
     "broom.mixed",
-    "patchwork"
+    "patchwork",
     # "kableExtra",
     # "knitr",
-    # "quarto",
+    "quarto"
     # "officer",
     # "officedown",
   )
@@ -67,38 +67,22 @@ list(
                                                    "Meta-Analysis of Prior Studies Examining the Effects of Machine Based Resistance Training on Strength")),
   
   tar_target(combined_function_plot_tiff, ggsave(combined_function_plot, filename = "plots/meta_plots_function.tiff", dpi = 300, w=10, h=10)),
-  tar_target(combined_strength_plot_tiff, ggsave(combined_strength_plot, filename = "plots/meta_plots_strength.tiff", dpi = 300, w=10, h=10))
-  
+  tar_target(combined_strength_plot_tiff, ggsave(combined_strength_plot, filename = "plots/meta_plots_strength.tiff", dpi = 300, w=10, h=10)),
 
-  # # # Diagnostic plots
-  # tar_target(rhat_model, make_rhat_plot(model)),
-  # tar_target(trace_model, make_trace_plots(model)),
-  # tar_target(pp_check_model, make_pp_check(model)),
-  # 
-  # # Calculate thresholds and their agreement
-  # tar_target(thresholds, calculate_thresholds(data)),
-  # tar_target(thresholds_agree, calculate_thresholds_agree(thresholds)),
-  # 
-  # # Make and save plots
-  # tar_target(individual_data_plot, plot_individual_data(data)),
-  # tar_target(individual_data_plot_tiff, make_individual_data_plot_tiff(individual_data_plot)),
-  # 
-  # tar_target(model_plot, plot_model(data, model)),
-  # tar_target(model_plot_tiff, make_model_plot_tiff(model_plot)),
-  # 
-  # tar_target(individual_preds_plot, plot_individual_preds(data, model)),
-  # tar_target(individual_preds_plot_tiff, make_individual_preds_plot_tiff(individual_preds_plot)),
-  # 
-  # tar_target(main_plot, combine_plots(individual_data_plot, individual_preds_plot, model_plot, thresholds_agree_plot)),
-  # 
-  # tar_target(thresholds_agree_plot, plot_thresholds_agree(thresholds, thresholds_agree)),
-  # tar_target(thresholds_agree_plot_tiff, make_thresholds_agree_plot_tiff(thresholds_agree_plot))
-  
-  # Render the report
-  # tar_quarto(report, "report.qmd")
+  # # Diagnostic plots
+  tar_target(rhat_model_function, make_rhat_plot(model_function)),
+  tar_target(trace_model_function, make_trace_plots(model_function)),
+  tar_target(pp_check_model_function, make_pp_check(model_function)),
+  tar_target(rhat_model_strength, make_rhat_plot(model_strength)),
+  tar_target(trace_model_strength, make_trace_plots(model_strength)),
+  tar_target(pp_check_model_strength, make_pp_check(model_strength))
   
   # # Render the supplementary material
   # tar_quarto(diagnostics_plots, "diagnostics_plots.qmd")
   
+  # Render the report
+  # tar_quarto(report, "report.qmd")
+  
+
   
 )

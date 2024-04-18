@@ -1,5 +1,5 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
-.Random.seed|object|7391a6a34f3848e6|||||||||||||||
+.Random.seed|object|9a8b6827906de247|||||||||||||||
 combine_plots|function|dde6b414d89fc094|||||||||||||||
 combined_function_plot|stem|deb9c86972b29d1a|feeca439ffb1fc9d|18663f4dac5565d8|1054167894||t19831.6137664242s|f0fae37654c7cccb|61131990|rds|local|vector|||0.015||
 combined_function_plot_tiff|stem|13fa7106115bb3f1|af7538bc5c6faeba|8fe8bb5ded761875|-68446072||t19831.6173344683s|6281f79619f6778a|80|rds|local|vector|||10.297||
@@ -10,6 +10,7 @@ contrast_strength_plot|stem|5e1656757c85cc92|fed71a1b00dc50dd|e1692d6524c20fe2|1
 data|stem|63eebcea27b68880|9ca0a6f10b807a74|c918ceb90aeae413|33550471||t19831.6063424869s|460dfadf84b493b5|8179|rds|local|vector|||0.781|32 rows with NAs omitted from model fitting.. 16 rows with NAs omitted from model fitting.|
 data_function|stem|cfb4817743bdab91|4a7a1944ef1fc34c|efcb65ec27dac520|514289073||t19831.6063428583s|1c4429e8d41bcedd|4627|rds|local|vector|||0||
 data_strength|stem|47263d9e2e893dcf|c683d10b64655ef9|80f90a9f3a4e1511|137520997||t19831.6063427423s|997d2ed5c516ac65|4586|rds|local|vector|||0||
+diagnostics_plots|stem||848ded6009e56640|118ab7108eb7b15e|-1155245933||t19831.6255393943s||0|file|local|vector|||21.406||Error running quarto cli.ℹ Rerun with quiet  FALSE to see the full error message.Caused by error System command quarto.exe failed
 file|stem|e7164f4b6db14414|6723e41105b6a4d0|ef46db3751d8e999|1735323524|C:/Users/james/Dropbox/Research/Older adults RT/older_adults_RT_machines_MA/data/data.csv|t19790.5758327887s|1366e03140d87ea0|19143|file|local|vector|||5.687||
 filter_function_data|function|727bf2fc84dc0534|||||||||||||||
 filter_strength_data|function|b64bf46fc48fbad9|||||||||||||||
@@ -19,6 +20,9 @@ get_posterior_draws_contrast|function|5458e2c119e00aff|||||||||||||||
 get_posterior_draws_meta|function|cd1cab88c1068aad|||||||||||||||
 get_posterior_draws_study|function|08af034d57ae7c6f|||||||||||||||
 get_tidy_model|function|336dd8cd81655d0e|||||||||||||||
+make_pp_check|function|4e9a019b6b971b97|||||||||||||||
+make_rhat_plot|function|ebbe878396e51a7f|||||||||||||||
+make_trace_plots|function|075cfc5cd8fead27|||||||||||||||
 meta_function_plot|stem|bb68b342363e6c34|fd1ca478b19b53fe|a33b585866bf7898|-391302350||t19831.6134511701s|04424598dc1a72b3|5309446|rds|local|vector|||0.39||
 meta_strength_plot|stem|3307e9688fd2dcb7|58d23ef0ac88bd5e|85fcff5c334e8b28|1831991485||t19831.6149035456s|3e36b2be5bec98c9|5407683|rds|local|vector|||0.125||
 model_function|stem|c5b95ba1890490b1|3fa7f2fedea7a0d4|f6eeccb51e90e15e|1019175418||t19831.6085782732s|0ce709202c43b65a|46724823|rds|local|vector|||128|There were 1 divergent transitions after warmup. Seehttpsmcstan.orgmiscwarnings.htmldivergenttransitionsafterwarmupto find out why this is a problem and how to eliminate them.. Examine the pairs plot to diagnose sampling problems|
@@ -32,8 +36,14 @@ posterior_draws_meta_function|stem|cf18597f313908f2|c17b9ffde1a16865|248cff7f137
 posterior_draws_meta_strength|stem|25089877a0705842|353a2b0c8c4b9d1c|aba955acb832d113|644925029||t19831.6148263926s|1bcfc406f13e9551|1030147|rds|local|vector|||0.89||
 posterior_draws_study_function|stem|659f6ee6410c8cfc|62d7c61f06798e72|71e0a1e4759d3779|-1194557757||t19831.6086480267s|234be96f95ac9008|9035804|rds|local|vector|||2.546||
 posterior_draws_study_strength|stem|168a93ead9f73666|2c512a1f69086b2d|982e19f05ccbc5dc|1942298335||t19831.6148551864s|d21f1b8f6411bae6|10097503|rds|local|vector|||2.703||
+pp_check_model_function|stem|8bccdeecf2207d22|02763ee027968335|abb00090de5643b5|245262997||t19831.6244963156s|dd362272d7887280|134031|rds|local|vector|||1.594||
+pp_check_model_strength|stem|23c9e74a51d24dc8|ff283cb6e5cbaaf0|bb399c78a28eb6fe|1358845941||t19831.6252207698s|50dffccdd8f309f4|135390|rds|local|vector|||1.766||
 read_prepare_data|function|c5c960fe3bfb0972|||||||||||||||
+rhat_model_function|stem|3b6a948f11322ea0|cad231762cc7737e|d0d66c63b390024b|449609128||t19831.6252828305s|4a0eebaa5f8ed3cc|46930327|rds|local|vector|||1.813|Dropped 1 NAs from new_rhatrhat.|
+rhat_model_strength|stem|66971e4a7be86799|dc9775eef4cc19f5|c1c71f0d34979828|1339441264||t19831.6252542598s|ce6ad14ded29b109|42882653|rds|local|vector|||2.532|Dropped 1 NAs from new_rhatrhat.|
 study_function_plot|stem|b955ad19c53c830a|16e190bbf4bb6105|b1564142761dbdc5|796169257||t19831.6133275601s|1d6bcb2b3b68b62e|54574139|rds|local|vector|||5.546||
 study_strength_plot|stem|9d0f4e5870567c1f|da59ac8787455116|c3c747c0729ccd8a|1259401855||t19831.6150217466s|4dc489f8d7a23682|60911511|rds|local|vector|||0.343||
 tidy_model_function|stem|acdd5b37b243225c|2e3be62e17e5aa79|b443be95931f79f0|-1097349816||t19831.6133430862s|c2d292eb6cbc57a8|662|rds|local|vector|||0.125|some parameter names contain underscores term naming may be unreliable|
 tidy_model_strength|stem|867a0799a28e8c23|75a531d85f86b6ee|833c6b1c6990b0e2|2085675102||t19831.6150539504s|0d280a2fc3631f0a|663|rds|local|vector|||0.078|some parameter names contain underscores term naming may be unreliable|
+trace_model_function|stem|6b97e9d9d1b674f9|67c9a5ee0586caee|6d8c9d45f431fc40|-174854510||t19831.6245579378s|187fd56aab08acac|14090387|rds|local|vector|||2.656||
+trace_model_strength|stem|61aaf7807c47cf75|c20a2dcadbde02d9|d09cde9aba49ea6f|867768467||t19831.6245235915s|f0009967e5f9d834|14095442|rds|local|vector|||3.781||
