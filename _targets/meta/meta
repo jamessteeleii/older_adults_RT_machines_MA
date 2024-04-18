@@ -1,0 +1,39 @@
+name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
+.Random.seed|object|7391a6a34f3848e6|||||||||||||||
+combine_plots|function|dde6b414d89fc094|||||||||||||||
+combined_function_plot|stem|deb9c86972b29d1a|feeca439ffb1fc9d|18663f4dac5565d8|1054167894||t19831.6137664242s|f0fae37654c7cccb|61131990|rds|local|vector|||0.015||
+combined_function_plot_tiff|stem|13fa7106115bb3f1|af7538bc5c6faeba|8fe8bb5ded761875|-68446072||t19831.6173344683s|6281f79619f6778a|80|rds|local|vector|||10.297||
+combined_strength_plot|stem|e2293da5745c3942|5ff3c791746feffc|a2355865315e6c6f|2011154864||t19831.6153398016s|e2185f17aa4e5d66|67565103|rds|local|vector|||0||
+combined_strength_plot_tiff|stem|5a1210c7f33ae679|c7d5dceabe02ecc3|e19d2e49cf81aad8|355047078||t19831.6173512843s|6281f79619f6778a|80|rds|local|vector|||10.547||
+contrast_function_plot|stem|4f3d1e8c5bba8114|ec03a1890b8a5eb7|cd11639a7ab9d5bd|959576587||t19831.6134874432s|8ecc2e449fc99bb0|1180920|rds|local|vector|||0.031||
+contrast_strength_plot|stem|5e1656757c85cc92|fed71a1b00dc50dd|e1692d6524c20fe2|197546355||t19831.6150279703s|a003c2675833fb4f|1180868|rds|local|vector|||0.031||
+data|stem|63eebcea27b68880|9ca0a6f10b807a74|c918ceb90aeae413|33550471||t19831.6063424869s|460dfadf84b493b5|8179|rds|local|vector|||0.781|32 rows with NAs omitted from model fitting.. 16 rows with NAs omitted from model fitting.|
+data_function|stem|cfb4817743bdab91|4a7a1944ef1fc34c|efcb65ec27dac520|514289073||t19831.6063428583s|1c4429e8d41bcedd|4627|rds|local|vector|||0||
+data_strength|stem|47263d9e2e893dcf|c683d10b64655ef9|80f90a9f3a4e1511|137520997||t19831.6063427423s|997d2ed5c516ac65|4586|rds|local|vector|||0||
+file|stem|e7164f4b6db14414|6723e41105b6a4d0|ef46db3751d8e999|1735323524|C:/Users/james/Dropbox/Research/Older adults RT/older_adults_RT_machines_MA/data/data.csv|t19790.5758327887s|1366e03140d87ea0|19143|file|local|vector|||5.687||
+filter_function_data|function|727bf2fc84dc0534|||||||||||||||
+filter_strength_data|function|b64bf46fc48fbad9|||||||||||||||
+fit_function_model|function|745f25c7d7b0f3a9|||||||||||||||
+fit_model|function|7a1389cc0194bdb2|||||||||||||||
+get_posterior_draws_contrast|function|5458e2c119e00aff|||||||||||||||
+get_posterior_draws_meta|function|cd1cab88c1068aad|||||||||||||||
+get_posterior_draws_study|function|08af034d57ae7c6f|||||||||||||||
+get_tidy_model|function|336dd8cd81655d0e|||||||||||||||
+meta_function_plot|stem|bb68b342363e6c34|fd1ca478b19b53fe|a33b585866bf7898|-391302350||t19831.6134511701s|04424598dc1a72b3|5309446|rds|local|vector|||0.39||
+meta_strength_plot|stem|3307e9688fd2dcb7|58d23ef0ac88bd5e|85fcff5c334e8b28|1831991485||t19831.6149035456s|3e36b2be5bec98c9|5407683|rds|local|vector|||0.125||
+model_function|stem|c5b95ba1890490b1|3fa7f2fedea7a0d4|f6eeccb51e90e15e|1019175418||t19831.6085782732s|0ce709202c43b65a|46724823|rds|local|vector|||128|There were 1 divergent transitions after warmup. Seehttpsmcstan.orgmiscwarnings.htmldivergenttransitionsafterwarmupto find out why this is a problem and how to eliminate them.. Examine the pairs plot to diagnose sampling problems|
+model_strength|stem|4c545ccc5e4663b7|dc0c567598b7a6dc|71012e432373da70|-760076008||t19831.6147892295s|8623cba713f69de7|42679591|rds|local|vector|||143.781||
+plot_contrast|function|5951769109c42e79|||||||||||||||
+plot_meta|function|22b2c447e16bfff0|||||||||||||||
+plot_study|function|4d7e02a814815023|||||||||||||||
+posterior_draws_contrast_function|stem|4119a6c12675dc49|220b9802be483adb|7857408f5b19b6b3|-601664098||t19831.6134839216s|4ab8e1d44f0d783f|199644|rds|local|vector|||2.047||
+posterior_draws_contrast_strength|stem|c9b02d6cf2028a5a|c951c15652c4b215|71a2d71daacdcb7c|1835980155||t19831.6150245824s|0906e8f822ec1f96|199680|rds|local|vector|||2.203||
+posterior_draws_meta_function|stem|cf18597f313908f2|c17b9ffde1a16865|248cff7f137ff487|-652442667||t19831.6133830201s|ed73268dc459af2b|1012707|rds|local|vector|||1.453||
+posterior_draws_meta_strength|stem|25089877a0705842|353a2b0c8c4b9d1c|aba955acb832d113|644925029||t19831.6148263926s|1bcfc406f13e9551|1030147|rds|local|vector|||0.89||
+posterior_draws_study_function|stem|659f6ee6410c8cfc|62d7c61f06798e72|71e0a1e4759d3779|-1194557757||t19831.6086480267s|234be96f95ac9008|9035804|rds|local|vector|||2.546||
+posterior_draws_study_strength|stem|168a93ead9f73666|2c512a1f69086b2d|982e19f05ccbc5dc|1942298335||t19831.6148551864s|d21f1b8f6411bae6|10097503|rds|local|vector|||2.703||
+read_prepare_data|function|c5c960fe3bfb0972|||||||||||||||
+study_function_plot|stem|b955ad19c53c830a|16e190bbf4bb6105|b1564142761dbdc5|796169257||t19831.6133275601s|1d6bcb2b3b68b62e|54574139|rds|local|vector|||5.546||
+study_strength_plot|stem|9d0f4e5870567c1f|da59ac8787455116|c3c747c0729ccd8a|1259401855||t19831.6150217466s|4dc489f8d7a23682|60911511|rds|local|vector|||0.343||
+tidy_model_function|stem|acdd5b37b243225c|2e3be62e17e5aa79|b443be95931f79f0|-1097349816||t19831.6133430862s|c2d292eb6cbc57a8|662|rds|local|vector|||0.125|some parameter names contain underscores term naming may be unreliable|
+tidy_model_strength|stem|867a0799a28e8c23|75a531d85f86b6ee|833c6b1c6990b0e2|2085675102||t19831.6150539504s|0d280a2fc3631f0a|663|rds|local|vector|||0.078|some parameter names contain underscores term naming may be unreliable|

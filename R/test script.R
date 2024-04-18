@@ -1,6 +1,13 @@
 library(tidyverse)
+library(patchwork)
 library(metafor)
+library(brms)
+library(rstan)
+library(tidybayes)
+library(marginaleffects)
 
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores() - 1)
 
 ##### Read csv as data frame into environment 
 data <- read_csv("data/data.csv")
@@ -16,7 +23,7 @@ data$change_t_value <- replmiss(data$change_t_value, with(data, qt(change_p_valu
 data$se_change <- replmiss(data$se_change, with(data, ifelse(is.na(m_change), 
                                                                  (m_post - m_pre)/change_t_value, m_change/change_t_value)))
 
-# Make positive
+# Make SE positive (Change scores)
 data$se_change <- ifelse(data$se_change < 0, data$se_change * -1, data$se_change)
 
 # Convert CI to SE (Change scores)
@@ -77,163 +84,425 @@ data_function <- filter(data, outcome_group == "function") |>
   filter(!is.na(yi) &
            !is.na(vi))
 
-MultiLevelModel_function <- rma.mv(yi, V=vi, data=data_function,
-                                       slab=paste(study), mods = ~ 0 + training_control,
-                                       random = list(~ 1 | study_code, ~ 1 | group_code, ~ 1 | es_code), method="REML", test="t",
-                                       control=list(optimizer="optim", optmethod="Nelder-Mead"))
+# meta_function <- rma.mv(yi, V=vi, data=data_function,
+#                                        slab=paste(study), mods = ~ 0 + training_control,
+#                                        random = list(~ 1 | study_code, ~ 1 | group_code, ~ 1 | es_code), method="REML", test="t",
+#                                        control=list(optimizer="optim", optmethod="Nelder-Mead"))
+# 
+# 
+# ### Calculate robust estimate from multi-level model
+# RobuEst_meta_function <- robust(meta_function, data_function$study)
+# 
+# data_function <- cbind(data_function, predict(RobuEst_meta_function))
+
+# data_function |>
+#   rowid_to_column() |>
+#   ggplot(aes(y=reorder(study, yi))) +
+#   geom_vline(xintercept = 0, lty = "dashed") +
+#   annotate("rect", ymin = -Inf, ymax = Inf,
+#                   xmin = RobuEst_meta_function$ci.lb[1],
+#                   xmax = RobuEst_meta_function$ci.ub[1],
+#            alpha = 0.25, color = NA, fill = "#D55E00") +
+#   geom_vline(xintercept = RobuEst_meta_function$beta[1], color = "#D55E00") +
+#   annotate("rect", ymin = -Inf, ymax = Inf,
+#            xmin = RobuEst_meta_function$ci.lb[2],
+#            xmax = RobuEst_meta_function$ci.ub[2],
+#            alpha = 0.25, color = NA, fill  = "#009E73") +
+#   geom_vline(xintercept = RobuEst_meta_function$beta[2], color = "#009E73") +
+#   geom_pointrange(aes(x=yi, color = training_control,
+#                       xmin = yi - (sqrt(vi) * 1.96),
+#                       xmax = yi + (sqrt(vi) * 1.96)
+#   ), 
+#   position = position_jitter(h=0.15, w=0, seed = 1988), alpha = 0.5) +
+#   scale_color_manual(values = c("#D55E00","#009E73")) +
+#   annotate("text", x = 2.25, y = 3,
+#            label = glue::glue("Training Estimate = {round(RobuEst_meta_function$beta[2],2)} [95%CI: {round(RobuEst_meta_function$ci.lb[2],2)} to {round(RobuEst_meta_function$ci.ub[2],2)}]"),
+#            size = 3) +
+#   annotate("text", x = 2.25, y = 2,
+#            label = glue::glue("Control Estimate = {round(RobuEst_meta_function$beta[1],2)} [95%CI: {round(RobuEst_meta_function$ci.lb[1],2)} to {round(RobuEst_meta_function$ci.ub[1],2)}]"),
+#            size = 3) +
+#   labs(
+#     x = "Standardised Mean Change",
+#     y = "Study",
+#     color = "Group",
+#     title = "Functional Outcomes",
+#     subtitle = "Vertical lines and bands are the meta-analytic point and 95% confidence interval estimates\nIndividual study level effects shown with point and confidence interval estimates"
+#   ) +
+#   theme_bw()
+# 
+# ggsave("function_plot.png", height = 5, width = 10, dpi = 300)
+
+meta_function <- brm(yi | se(sqrt(vi)) ~ training_control + 
+                                  (training_control | study_code) + 
+                                  (1 | group_code) +
+                                  (1 | es_code),
+                                data = data_function,
+                                chains = 4,
+                                cores = 4,
+                                seed = 1988,
+                                warmup = 2000,
+                                iter = 6000,
+                                control = list(adapt_delta = 0.99, max_treedepth = 11)
+)
+
+plot(meta_function)
+
+pp_check(meta_function)
 
 
-### Calculate robust estimate from multi-level model
-RobuEst_MultiLevelModel_function <- robust(MultiLevelModel_function, data_function$study)
+meta_pred <- predictions(
+  meta_function,
+  re_formula = NA
+) |>
+  posterior_draws()
 
-data_function <- cbind(data_function, predict(RobuEst_MultiLevelModel_function))
+meta_pred_labels <- meta_pred |>
+  group_by(training_control) |>
+  mean_qi(draw)
 
-RobuEst_MultiLevelModel_function$ci.lb[1]
+study_pred <- predictions(
+  meta_function,
+  re_formula = NULL,
+) |>
+  posterior_draws()
 
-data_function |>
-  rowid_to_column() |>
-  ggplot(aes(y=reorder(study, yi))) +
-  annotate("rect", ymin = -Inf, ymax = Inf,
-                  xmin = RobuEst_MultiLevelModel_function$ci.lb[1],
-                  xmax = RobuEst_MultiLevelModel_function$ci.ub[1],
-           alpha = 0.25, color = NA, fill = "#D55E00") +
-  geom_vline(xintercept = RobuEst_MultiLevelModel_function$beta[1], color = "#D55E00") +
-  annotate("rect", ymin = -Inf, ymax = Inf,
-           xmin = RobuEst_MultiLevelModel_function$ci.lb[2],
-           xmax = RobuEst_MultiLevelModel_function$ci.ub[2],
-           alpha = 0.25, color = NA, fill  = "#009E73") +
-  geom_vline(xintercept = RobuEst_MultiLevelModel_function$beta[2], color = "#009E73") +
-  geom_pointrange(aes(x=yi, color = training_control,
-                      xmin = yi - (sqrt(vi) * 1.96),
-                      xmax = yi + (sqrt(vi) * 1.96)
-  ), 
-  position = position_jitter(h=0.15), alpha = 0.5) +
-  scale_color_manual(values = c("#D55E00","#009E73")) +
-  annotate("text", x = 2.25, y = 3,
-           label = glue::glue("Training Estimate = {round(RobuEst_MultiLevelModel_function$beta[2],2)} [95%CI: {round(RobuEst_MultiLevelModel_function$ci.lb[2],2)} to {round(RobuEst_MultiLevelModel_function$ci.ub[2],2)}]"),
-           size = 3) +
-  annotate("text", x = 2.25, y = 2,
-           label = glue::glue("Control Estimate = {round(RobuEst_MultiLevelModel_function$beta[1],2)} [95%CI: {round(RobuEst_MultiLevelModel_function$ci.lb[1],2)} to {round(RobuEst_MultiLevelModel_function$ci.ub[1],2)}]"),
-           size = 3) +
+study_labels <- data_function |>
+  select(1,2) |>
+  group_by(study_code) |>
+  slice(1)
+
+study_pred <- left_join(study_pred, study_labels, by = "study_code") |>
+  group_by(study) |>
+  mutate(mean_draw = mean(draw))
+
+study_pred_labels <- study_pred |>
+  group_by(study, training_control) |>
+  mean_qi(draw)
+
+meta_slopes <- avg_slopes(
+  meta_function,
+  re_formula = NA,
+  variables = "training_control"
+) |>
+  posterior_draws()
+
+meta_slopes_labels <- meta_slopes |>
+  group_by(contrast) |>
+  mean_qi(draw)
+
+
+meta_pred_plot <- ggplot(meta_pred, aes(x = draw, fill = training_control)) +
+  geom_vline(xintercept = 0, lty = "dashed") +
+  stat_halfeye(slab_alpha = .5, .width = 0.95) +
+  facet_grid(training_control~.) +
+  scale_fill_manual(values = c("#56B4E9", "#E69F00", "#009E73")) +
+  geom_text(
+    data = mutate_if(meta_pred_labels,
+                     is.numeric, round, 2),
+    aes(
+      label = glue::glue("{draw} [{.lower}, {.upper}]"),
+      x = draw, y = 0.1
+    ),
+    size = 3
+  ) +
   labs(
     x = "Standardised Mean Change",
-    y = "Study",
-    color = "Group",
-    title = "Functional Outcomes",
-    subtitle = "Vertical lines and bands are the meta-analytic point and 95% confidence interval estimates\nIndividual study level effects shown with point and confidence interval estimates"
+    fill = "Condition",
+    title = "Global Grand Mean Estimates for Condition"
   ) +
-  theme_bw()
+  theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank()) +
+  theme(title = element_text(size=8))
 
-ggsave("function_plot.png", height = 5, width = 10, dpi = 300)
 
 
-# Upper Body Strength outcomes
-data_upper_body_strength <- filter(data, outcome_group == "upper_body_strength") |>
+study_pred_plot <- ggplot(study_pred, aes(x = draw, 
+                                          y = reorder(study, mean_draw), 
+                                          fill = training_control)) +
+  geom_vline(xintercept = 0, lty = "dashed") +
+  # Add individual study data
+  geom_point(
+    data = data_function,
+    aes(x = yi, y = study, color = training_control),
+    position = position_jitterdodge(dodge.width = 0.5, jitter.width = 0.1),
+    alpha = 0.5
+  ) +
+  stat_halfeye(slab_alpha = .5, position = position_dodge(width = 0.5), size = 0.25) +
+  scale_fill_manual(values = c("#56B4E9", "#E69F00", "#009E73")) +
+  scale_color_manual(values = c("#56B4E9", "#E69F00", "#009E73")) +
+  geom_text(
+    data = mutate_if(study_pred_labels,
+                     is.numeric, round, 2),
+    aes(
+      label = glue::glue("{training_control}: {draw} [{.lower}, {.upper}]"),
+      x = 3, y =reorder(study, draw), group = training_control
+    ),
+    size = 2, position = position_dodge(width = 0.75),
+    hjust = "inward"
+  ) +
+  labs(
+    x = "Standardised Mean Change",
+    title = "Conditional Estimates for Condition by Study"
+  ) +
+  guides(
+    fill = "none",
+    color = "none"
+  ) +
+  theme_bw() +
+  theme(axis.title.y = element_blank()) +
+  theme(title = element_text(size=8))
+
+
+contrast_plot <- ggplot(meta_slopes, aes(x = draw)) +
+  geom_vline(xintercept = 0, lty = "dashed") +
+  stat_halfeye(slab_alpha = .5, fill = "black") +
+  geom_text(
+    data = mutate_if(meta_slopes_labels,
+                     is.numeric, round, 2),
+    aes(
+      label = glue::glue("{draw} [{.lower}, {.upper}]"),
+      x = draw, y = 0.1
+    ),
+    size = 3
+  ) +
+  labs(
+    x = "Standardised Mean Change",
+    title = "Contrasts Between Conditions (Training - Control)"
+  ) +
+  theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank()) +
+  theme(title = element_text(size=8))
+
+meta_plots <- (study_pred_plot / (meta_pred_plot + contrast_plot)) + 
+  plot_annotation(title = "Meta-Analysis of Prior Studies Examining the Effects of Machine Based Resistance Training on Function",
+                  caption = "Point estimates and 95% quantile intervals reported") +
+  plot_layout(guides = "collect", axis_titles = "collect",
+              widths = c(2,1,1))  &
+  theme(axis.title.x = element_text(size=10),
+        legend.position = "bottom")
+
+meta_plots
+
+ggsave("meta_plots_function.tiff", dpi = 300, w=10, h=10)
+
+
+
+
+
+# Strength outcomes
+data_strength <- filter(data, outcome_group == "upper_body_strength" |
+                                     outcome_group == "lower_body_strength") |>
   filter(!is.na(yi) &
            !is.na(vi))
 
-MultiLevelModel_upper_body_strength <- rma.mv(yi, V=vi, data=data_upper_body_strength,
-                                   slab=paste(study), mods = ~ 0 + training_control,
-                                   random = list(~ 1 | study_code, ~ 1 | group_code, ~ 1 | es_code), method="REML", test="t",
-                                   control=list(optimizer="optim", optmethod="Nelder-Mead"))
+# MultiLevelModel_strength <- rma.mv(yi, V=vi, data=data_strength,
+#                                    slab=paste(study), mods = ~ 0 + training_control,
+#                                    random = list(~ 1 | study_code, ~ 1 | group_code, ~ 1 | es_code), method="REML", test="t",
+#                                    control=list(optimizer="optim", optmethod="Nelder-Mead"))
+# 
+# 
+# ### Calculate robust estimate from multi-level model
+# RobuEst_MultiLevelModel_strength <- robust(MultiLevelModel_strength, data_strength$study)
+# 
+# data_strength <- cbind(data_strength, predict(RobuEst_MultiLevelModel_strength))
+# 
+# data_strength |>
+#   rowid_to_column() |>
+#   ggplot(aes(y=reorder(study, yi))) +
+#   geom_vline(xintercept = 0, lty = "dashed") +
+#   annotate("rect", ymin = -Inf, ymax = Inf,
+#            xmin = RobuEst_MultiLevelModel_strength$ci.lb[1],
+#            xmax = RobuEst_MultiLevelModel_strength$ci.ub[1],
+#            alpha = 0.25, color = NA, fill = "#D55E00") +
+#   geom_vline(xintercept = RobuEst_MultiLevelModel_strength$beta[1], color = "#D55E00") +
+#   annotate("rect", ymin = -Inf, ymax = Inf,
+#            xmin = RobuEst_MultiLevelModel_strength$ci.lb[2],
+#            xmax = RobuEst_MultiLevelModel_strength$ci.ub[2],
+#            alpha = 0.25, color = NA, fill  = "#009E73") +
+#   geom_vline(xintercept = RobuEst_MultiLevelModel_strength$beta[2], color = "#009E73") +
+#   geom_pointrange(aes(x=yi, color = training_control,
+#                       xmin = yi - (sqrt(vi) * 1.96),
+#                       xmax = yi + (sqrt(vi) * 1.96)
+#   ), 
+#   position = position_jitter(h=0.15, w=0, seed = 1988), alpha = 0.5) +
+#   scale_color_manual(values = c("#D55E00","#009E73")) +
+#   annotate("text", x = 2.25, y = 3,
+#            label = glue::glue("Training Estimate = {round(RobuEst_MultiLevelModel_strength$beta[2],2)} [95%CI: {round(RobuEst_MultiLevelModel_strength$ci.lb[2],2)} to {round(RobuEst_MultiLevelModel_strength$ci.ub[2],2)}]"),
+#            size = 3) +
+#   annotate("text", x = 2.25, y = 2,
+#            label = glue::glue("Control Estimate = {round(RobuEst_MultiLevelModel_strength$beta[1],2)} [95%CI: {round(RobuEst_MultiLevelModel_strength$ci.lb[1],2)} to {round(RobuEst_MultiLevelModel_strength$ci.ub[1],2)}]"),
+#            size = 3) +
+#   labs(
+#     x = "Standardised Mean Change",
+#     y = "Study",
+#     color = "Group",
+#     title = "Strength Outcomes",
+#     subtitle = "Vertical lines and bands are the meta-analytic point and 95% confidence interval estimates\nIndividual study level effects shown with point and confidence interval estimates"
+#   ) +
+#   theme_bw()
+# 
+# 
+# ggsave("strength_plot.png", height = 5, width = 10, dpi = 300)
+
+meta_strength <- brm(yi | se(sqrt(vi)) ~ training_control + 
+                       (training_control | study_code) + 
+                       (1 | group_code) +
+                       (1 | es_code),
+                     data = data_strength,
+                     chains = 4,
+                     cores = 4,
+                     seed = 1988,
+                     warmup = 2000,
+                     iter = 6000,
+                     control = list(adapt_delta = 0.99, max_treedepth = 11)
+)
+
+plot(meta_strength)
+
+pp_check(meta_strength)
 
 
-### Calculate robust estimate from multi-level model
-RobuEst_MultiLevelModel_upper_body_strength <- robust(MultiLevelModel_upper_body_strength, data_upper_body_strength$study)
+meta_pred <- predictions(
+  meta_strength,
+  re_formula = NA
+) |>
+  posterior_draws()
 
-data_upper_body_strength <- cbind(data_upper_body_strength, predict(RobuEst_MultiLevelModel_upper_body_strength))
+meta_pred_labels <- meta_pred |>
+  group_by(training_control) |>
+  mean_qi(draw)
 
-RobuEst_MultiLevelModel_upper_body_strength$ci.lb[1]
+study_pred <- predictions(
+  meta_strength,
+  re_formula = NULL,
+) |>
+  posterior_draws()
 
-data_upper_body_strength |>
-  rowid_to_column() |>
-  ggplot(aes(y=reorder(study, yi))) +
-  annotate("rect", ymin = -Inf, ymax = Inf,
-           xmin = RobuEst_MultiLevelModel_upper_body_strength$ci.lb[1],
-           xmax = RobuEst_MultiLevelModel_upper_body_strength$ci.ub[1],
-           alpha = 0.25, color = NA, fill = "#D55E00") +
-  geom_vline(xintercept = RobuEst_MultiLevelModel_upper_body_strength$beta[1], color = "#D55E00") +
-  annotate("rect", ymin = -Inf, ymax = Inf,
-           xmin = RobuEst_MultiLevelModel_upper_body_strength$ci.lb[2],
-           xmax = RobuEst_MultiLevelModel_upper_body_strength$ci.ub[2],
-           alpha = 0.25, color = NA, fill  = "#009E73") +
-  geom_vline(xintercept = RobuEst_MultiLevelModel_upper_body_strength$beta[2], color = "#009E73") +
-  geom_pointrange(aes(x=yi, color = training_control,
-                      xmin = yi - (sqrt(vi) * 1.96),
-                      xmax = yi + (sqrt(vi) * 1.96)
-  ), 
-  position = position_jitter(h=0.15), alpha = 0.5) +
-  scale_color_manual(values = c("#D55E00","#009E73")) +
-  annotate("text", x = 2.25, y = 3,
-           label = glue::glue("Training Estimate = {round(RobuEst_MultiLevelModel_upper_body_strength$beta[2],2)} [95%CI: {round(RobuEst_MultiLevelModel_upper_body_strength$ci.lb[2],2)} to {round(RobuEst_MultiLevelModel_upper_body_strength$ci.ub[2],2)}]"),
-           size = 3) +
-  annotate("text", x = 2.25, y = 2,
-           label = glue::glue("Control Estimate = {round(RobuEst_MultiLevelModel_upper_body_strength$beta[1],2)} [95%CI: {round(RobuEst_MultiLevelModel_upper_body_strength$ci.lb[1],2)} to {round(RobuEst_MultiLevelModel_upper_body_strength$ci.ub[1],2)}]"),
-           size = 3) +
+study_labels <- data_strength |>
+  select(1,2) |>
+  group_by(study_code) |>
+  slice(1)
+
+study_pred <- left_join(study_pred, study_labels, by = "study_code") |>
+  group_by(study) |>
+  mutate(mean_draw = mean(draw))
+
+study_pred_labels <- study_pred |>
+  group_by(study, training_control) |>
+  mean_qi(draw)
+
+meta_slopes <- avg_slopes(
+  meta_strength,
+  re_formula = NA,
+  variables = "training_control"
+) |>
+  posterior_draws()
+
+meta_slopes_labels <- meta_slopes |>
+  group_by(contrast) |>
+  mean_qi(draw)
+
+
+meta_pred_plot <- ggplot(meta_pred, aes(x = draw, fill = training_control)) +
+  geom_vline(xintercept = 0, lty = "dashed") +
+  stat_halfeye(slab_alpha = .5, .width = 0.95) +
+  facet_grid(training_control~.) +
+  scale_fill_manual(values = c("#56B4E9", "#E69F00", "#009E73")) +
+  geom_text(
+    data = mutate_if(meta_pred_labels,
+                     is.numeric, round, 2),
+    aes(
+      label = glue::glue("{draw} [{.lower}, {.upper}]"),
+      x = draw, y = 0.1
+    ),
+    size = 3
+  ) +
   labs(
     x = "Standardised Mean Change",
-    y = "Study",
-    color = "Group",
-    title = "Upper Body Strength Outcomes",
-    subtitle = "Vertical lines and bands are the meta-analytic point and 95% confidence interval estimates\nIndividual study level effects shown with point and confidence interval estimates"
+    fill = "Condition",
+    title = "Global Grand Mean Estimates for Condition"
   ) +
-  theme_bw()
+  theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank()) +
+  theme(title = element_text(size=8))
 
 
-# Lower Body Strength outcomes
-data_lower_body_strength <- filter(data, outcome_group == "lower_body_strength") |>
-  filter(!is.na(yi) &
-           !is.na(vi))
 
-MultiLevelModel_lower_body_strength <- rma.mv(yi, V=vi, data=data_lower_body_strength,
-                                              slab=paste(study), mods = ~ 0 + training_control,
-                                              random = list(~ 1 | study_code, ~ 1 | group_code, ~ 1 | es_code), method="REML", test="t",
-                                              control=list(optimizer="optim", optmethod="Nelder-Mead"))
-
-
-### Calculate robust estimate from multi-level model
-RobuEst_MultiLevelModel_lower_body_strength <- robust(MultiLevelModel_lower_body_strength, data_lower_body_strength$study)
-
-data_lower_body_strength <- cbind(data_lower_body_strength, predict(RobuEst_MultiLevelModel_lower_body_strength))
-
-RobuEst_MultiLevelModel_lower_body_strength$ci.lb[1]
-
-data_lower_body_strength |>
-  rowid_to_column() |>
-  ggplot(aes(y=reorder(study, yi))) +
-  annotate("rect", ymin = -Inf, ymax = Inf,
-           xmin = RobuEst_MultiLevelModel_lower_body_strength$ci.lb[1],
-           xmax = RobuEst_MultiLevelModel_lower_body_strength$ci.ub[1],
-           alpha = 0.25, color = NA, fill = "#D55E00") +
-  geom_vline(xintercept = RobuEst_MultiLevelModel_lower_body_strength$beta[1], color = "#D55E00") +
-  annotate("rect", ymin = -Inf, ymax = Inf,
-           xmin = RobuEst_MultiLevelModel_lower_body_strength$ci.lb[2],
-           xmax = RobuEst_MultiLevelModel_lower_body_strength$ci.ub[2],
-           alpha = 0.25, color = NA, fill  = "#009E73") +
-  geom_vline(xintercept = RobuEst_MultiLevelModel_lower_body_strength$beta[2], color = "#009E73") +
-  geom_pointrange(aes(x=yi, color = training_control,
-                      xmin = yi - (sqrt(vi) * 1.96),
-                      xmax = yi + (sqrt(vi) * 1.96)
-  ), 
-  position = position_jitter(h=0.15), alpha = 0.5) +
-  scale_color_manual(values = c("#D55E00","#009E73")) +
-  annotate("text", x = 2.25, y = 3,
-           label = glue::glue("Training Estimate = {round(RobuEst_MultiLevelModel_lower_body_strength$beta[2],2)} [95%CI: {round(RobuEst_MultiLevelModel_lower_body_strength$ci.lb[2],2)} to {round(RobuEst_MultiLevelModel_lower_body_strength$ci.ub[2],2)}]"),
-           size = 3) +
-  annotate("text", x = 2.25, y = 2,
-           label = glue::glue("Control Estimate = {round(RobuEst_MultiLevelModel_lower_body_strength$beta[1],2)} [95%CI: {round(RobuEst_MultiLevelModel_lower_body_strength$ci.lb[1],2)} to {round(RobuEst_MultiLevelModel_lower_body_strength$ci.ub[1],2)}]"),
-           size = 3) +
+study_pred_plot <- ggplot(study_pred, aes(x = draw, 
+                                          y = reorder(study, mean_draw), 
+                                          fill = training_control)) +
+  geom_vline(xintercept = 0, lty = "dashed") +
+  # Add individual study data
+  geom_point(
+    data = data_strength,
+    aes(x = yi, y = study, color = training_control),
+    position = position_jitterdodge(dodge.width = 0.5, jitter.width = 0.1),
+    alpha = 0.5
+  ) +
+  stat_halfeye(slab_alpha = .5, position = position_dodge(width = 0.5), size = 0.25) +
+  scale_fill_manual(values = c("#56B4E9", "#E69F00", "#009E73")) +
+  scale_color_manual(values = c("#56B4E9", "#E69F00", "#009E73")) +
+  geom_text(
+    data = mutate_if(study_pred_labels,
+                     is.numeric, round, 2),
+    aes(
+      label = glue::glue("{training_control}: {draw} [{.lower}, {.upper}]"),
+      x = 3, y =reorder(study, draw), group = training_control
+    ),
+    size = 2, position = position_dodge(width = 0.75),
+    hjust = "inward"
+  ) +
   labs(
     x = "Standardised Mean Change",
-    y = "Study",
-    color = "Group",
-    title = "Lower Body Strength Outcomes",
-    subtitle = "Vertical lines and bands are the meta-analytic point and 95% confidence interval estimates\nIndividual study level effects shown with point and confidence interval estimates"
+    title = "Conditional Estimates for Condition by Study"
   ) +
-  theme_bw()
+  guides(
+    fill = "none",
+    color = "none"
+  ) +
+  theme_bw() +
+  theme(axis.title.y = element_blank()) +
+  theme(title = element_text(size=8))
 
-ggsave("lower_body_strength_plot.png", height = 5, width = 10, dpi = 300)
 
+contrast_plot <- ggplot(meta_slopes, aes(x = draw)) +
+  geom_vline(xintercept = 0, lty = "dashed") +
+  stat_halfeye(slab_alpha = .5, fill = "black") +
+  geom_text(
+    data = mutate_if(meta_slopes_labels,
+                     is.numeric, round, 2),
+    aes(
+      label = glue::glue("{draw} [{.lower}, {.upper}]"),
+      x = draw, y = 0.1
+    ),
+    size = 3
+  ) +
+  labs(
+    x = "Standardised Mean Change",
+    title = "Contrasts Between Conditions (Training - Control)"
+  ) +
+  theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank()) +
+  theme(title = element_text(size=8))
 
+meta_plots <- (study_pred_plot / (meta_pred_plot + contrast_plot)) + 
+  plot_annotation(title = "Meta-Analysis of Prior Studies Examining the Effects of Machine Based Resistance Training on Strength",
+                  caption = "Point estimates and 95% quantile intervals reported") +
+  plot_layout(guides = "collect", axis_titles = "collect",
+              widths = c(2,1,1))  &
+  theme(axis.title.x = element_text(size=10),
+        legend.position = "bottom")
+
+meta_plots
+
+ggsave("meta_plots_strength.tiff", dpi = 300, w=10, h=10)
 
 
