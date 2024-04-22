@@ -187,7 +187,7 @@ plot_study <- function(data, posterior_draws) {
       position = position_jitterdodge(dodge.width = 0.5, jitter.width = 0.1),
       alpha = 0.5
     ) +
-    stat_halfeye(slab_alpha = .5, position = position_dodge(width = 0.5), size = 0.25) +
+    stat_halfeye(slab_alpha = .5, position = position_dodge(width = 0.5), size = 0.25, .width = 0.95) +
     scale_fill_manual(values = c("#56B4E9", "#E69F00", "#009E73")) +
     scale_color_manual(values = c("#56B4E9", "#E69F00", "#009E73")) +
     geom_text(
@@ -221,7 +221,7 @@ plot_contrast <- function(posterior_draws) {
   
   contrast_plot <- ggplot(posterior_draws, aes(x = draw)) +
     geom_vline(xintercept = 0, lty = "dashed") +
-    stat_halfeye(slab_alpha = .5, fill = "black") +
+    stat_halfeye(slab_alpha = .5, .width = 0.95, fill = "black") +
     geom_text(
       data = mutate_if(contrast_labels,
                        is.numeric, round, 2),

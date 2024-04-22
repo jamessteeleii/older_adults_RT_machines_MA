@@ -1,12 +1,13 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
-.Random.seed|object|9a8b6827906de247|||||||||||||||
+.Random.seed|object|d9cacca68d6f4bb5|||||||||||||||
+analysis_results|stem||f865583da723b9b9|017ca77491db3f02|-1628769239||t19835.4766763184s||0|file|local|vector|||29.828||Error running quarto cli.ℹ Rerun with quiet  FALSE to see the full error message.Caused by error System command quarto.exe failed
 combine_plots|function|dde6b414d89fc094|||||||||||||||
-combined_function_plot|stem|deb9c86972b29d1a|feeca439ffb1fc9d|18663f4dac5565d8|1054167894||t19831.6137664242s|f0fae37654c7cccb|61131990|rds|local|vector|||0.015||
-combined_function_plot_tiff|stem|13fa7106115bb3f1|af7538bc5c6faeba|8fe8bb5ded761875|-68446072||t19831.6173344683s|6281f79619f6778a|80|rds|local|vector|||10.297||
-combined_strength_plot|stem|e2293da5745c3942|5ff3c791746feffc|a2355865315e6c6f|2011154864||t19831.6153398016s|e2185f17aa4e5d66|67565103|rds|local|vector|||0||
-combined_strength_plot_tiff|stem|5a1210c7f33ae679|c7d5dceabe02ecc3|e19d2e49cf81aad8|355047078||t19831.6173512843s|6281f79619f6778a|80|rds|local|vector|||10.547||
-contrast_function_plot|stem|4f3d1e8c5bba8114|ec03a1890b8a5eb7|cd11639a7ab9d5bd|959576587||t19831.6134874432s|8ecc2e449fc99bb0|1180920|rds|local|vector|||0.031||
-contrast_strength_plot|stem|5e1656757c85cc92|fed71a1b00dc50dd|e1692d6524c20fe2|197546355||t19831.6150279703s|a003c2675833fb4f|1180868|rds|local|vector|||0.031||
+combined_function_plot|stem|726287f1ce5632b2|feeca439ffb1fc9d|43d7379019044e0a|1054167894||t19835.4496009373s|70d1df635a4db311|61131911|rds|local|vector|||0.015||
+combined_function_plot_tiff|stem|13fa7106115bb3f1|af7538bc5c6faeba|b26edbf26c913c38|-68446072||t19835.4497930938s|6281f79619f6778a|80|rds|local|vector|||5.281||
+combined_strength_plot|stem|b2f645b6d3e7a00f|5ff3c791746feffc|039db357aed4d7a3|2011154864||t19835.449431649s|3c724866c7daaa62|67565089|rds|local|vector|||0||
+combined_strength_plot_tiff|stem|5a1210c7f33ae679|c7d5dceabe02ecc3|95c7cdb439a849d0|355047078||t19835.4496566642s|6281f79619f6778a|80|rds|local|vector|||5.953||
+contrast_function_plot|stem|c3a76b6d24a1ef3b|ec03a1890b8a5eb7|f1c7f33e96d8a239|959576587||t19835.4491287602s|b65107de7088bc2a|1180914|rds|local|vector|||0.016||
+contrast_strength_plot|stem|1dc482e65a31738f|fed71a1b00dc50dd|f3ec2276510e0dc3|197546355||t19835.4490866211s|58a9052740ef14fb|1180824|rds|local|vector|||0.032||
 data|stem|63eebcea27b68880|9ca0a6f10b807a74|c918ceb90aeae413|33550471||t19831.6063424869s|460dfadf84b493b5|8179|rds|local|vector|||0.781|32 rows with NAs omitted from model fitting.. 16 rows with NAs omitted from model fitting.|
 data_function|stem|cfb4817743bdab91|4a7a1944ef1fc34c|efcb65ec27dac520|514289073||t19831.6063428583s|1c4429e8d41bcedd|4627|rds|local|vector|||0||
 data_strength|stem|47263d9e2e893dcf|c683d10b64655ef9|80f90a9f3a4e1511|137520997||t19831.6063427423s|997d2ed5c516ac65|4586|rds|local|vector|||0||
@@ -27,9 +28,9 @@ meta_function_plot|stem|bb68b342363e6c34|fd1ca478b19b53fe|a33b585866bf7898|-3913
 meta_strength_plot|stem|3307e9688fd2dcb7|58d23ef0ac88bd5e|85fcff5c334e8b28|1831991485||t19831.6149035456s|3e36b2be5bec98c9|5407683|rds|local|vector|||0.125||
 model_function|stem|c5b95ba1890490b1|3fa7f2fedea7a0d4|f6eeccb51e90e15e|1019175418||t19831.6085782732s|0ce709202c43b65a|46724823|rds|local|vector|||128|There were 1 divergent transitions after warmup. Seehttpsmcstan.orgmiscwarnings.htmldivergenttransitionsafterwarmupto find out why this is a problem and how to eliminate them.. Examine the pairs plot to diagnose sampling problems|
 model_strength|stem|4c545ccc5e4663b7|dc0c567598b7a6dc|71012e432373da70|-760076008||t19831.6147892295s|8623cba713f69de7|42679591|rds|local|vector|||143.781||
-plot_contrast|function|5951769109c42e79|||||||||||||||
+plot_contrast|function|18ce3f0a3ba90267|||||||||||||||
 plot_meta|function|22b2c447e16bfff0|||||||||||||||
-plot_study|function|4d7e02a814815023|||||||||||||||
+plot_study|function|166917c7577ac947|||||||||||||||
 posterior_draws_contrast_function|stem|4119a6c12675dc49|220b9802be483adb|7857408f5b19b6b3|-601664098||t19831.6134839216s|4ab8e1d44f0d783f|199644|rds|local|vector|||2.047||
 posterior_draws_contrast_strength|stem|c9b02d6cf2028a5a|c951c15652c4b215|71a2d71daacdcb7c|1835980155||t19831.6150245824s|0906e8f822ec1f96|199680|rds|local|vector|||2.203||
 posterior_draws_meta_function|stem|cf18597f313908f2|c17b9ffde1a16865|248cff7f137ff487|-652442667||t19831.6133830201s|ed73268dc459af2b|1012707|rds|local|vector|||1.453||
@@ -41,8 +42,8 @@ pp_check_model_strength|stem|23c9e74a51d24dc8|ff283cb6e5cbaaf0|bb399c78a28eb6fe|
 read_prepare_data|function|c5c960fe3bfb0972|||||||||||||||
 rhat_model_function|stem|3b6a948f11322ea0|cad231762cc7737e|d0d66c63b390024b|449609128||t19831.6252828305s|4a0eebaa5f8ed3cc|46930327|rds|local|vector|||1.813|Dropped 1 NAs from new_rhatrhat.|
 rhat_model_strength|stem|66971e4a7be86799|dc9775eef4cc19f5|c1c71f0d34979828|1339441264||t19831.6252542598s|ce6ad14ded29b109|42882653|rds|local|vector|||2.532|Dropped 1 NAs from new_rhatrhat.|
-study_function_plot|stem|b955ad19c53c830a|16e190bbf4bb6105|b1564142761dbdc5|796169257||t19831.6133275601s|1d6bcb2b3b68b62e|54574139|rds|local|vector|||5.546||
-study_strength_plot|stem|9d0f4e5870567c1f|da59ac8787455116|c3c747c0729ccd8a|1259401855||t19831.6150217466s|4dc489f8d7a23682|60911511|rds|local|vector|||0.343||
+study_function_plot|stem|7006317032832e5b|16e190bbf4bb6105|685f9df4be8559c2|796169257||t19835.4489724861s|5b0b419af04f164a|54573086|rds|local|vector|||5.5||
+study_strength_plot|stem|136dd02c3eb8f466|da59ac8787455116|7428dd6a6f107ddd|1259401855||t19835.4490829029s|6ba49075b3ee4c0e|60911456|rds|local|vector|||5.343||
 tidy_model_function|stem|acdd5b37b243225c|2e3be62e17e5aa79|b443be95931f79f0|-1097349816||t19831.6133430862s|c2d292eb6cbc57a8|662|rds|local|vector|||0.125|some parameter names contain underscores term naming may be unreliable|
 tidy_model_strength|stem|867a0799a28e8c23|75a531d85f86b6ee|833c6b1c6990b0e2|2085675102||t19831.6150539504s|0d280a2fc3631f0a|663|rds|local|vector|||0.078|some parameter names contain underscores term naming may be unreliable|
 trace_model_function|stem|6b97e9d9d1b674f9|67c9a5ee0586caee|6d8c9d45f431fc40|-174854510||t19831.6245579378s|187fd56aab08acac|14090387|rds|local|vector|||2.656||

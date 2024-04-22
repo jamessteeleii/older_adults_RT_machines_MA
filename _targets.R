@@ -23,8 +23,8 @@ tar_option_set(
     "marginaleffects",
     "broom.mixed",
     "patchwork",
-    # "kableExtra",
-    # "knitr",
+    "kableExtra",
+    "knitr",
     "quarto"
     # "officer",
     # "officedown",
@@ -75,13 +75,13 @@ list(
   tar_target(pp_check_model_function, make_pp_check(model_function)),
   tar_target(rhat_model_strength, make_rhat_plot(model_strength)),
   tar_target(trace_model_strength, make_trace_plots(model_strength)),
-  tar_target(pp_check_model_strength, make_pp_check(model_strength))
+  tar_target(pp_check_model_strength, make_pp_check(model_strength)),
   
   # # Render the supplementary material
   # tar_quarto(diagnostics_plots, "diagnostics_plots.qmd")
   
   # Render the report
-  # tar_quarto(report, "report.qmd")
+  tar_quarto(analysis_results, "analysis_results.qmd")
   
 
   
