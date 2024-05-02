@@ -67,7 +67,17 @@ read_prepare_data <- function(file) {
   data_decrease <- escalc(measure="SMCR", m1i=m_pre, 
                           m2i=m_post, sd1i=sd_pre, ni=n_post, ri=ri, data = filter(data, increase_decrease == "decrease"))
   
-  data <- rbind(data_increase, data_decrease)
+  data_increase_change <- escalc(measure="SMCR", m1i=m_change, 
+                                 m2i=m_pre, sd1i=sd_pre, ni=n_post, ri=ri, data = filter(data, increase_decrease == "increase" & is.na(m_post)) |>
+                                   mutate(m_pre = 0)
+  )
+  
+  data_decrease_change <- escalc(measure="SMCR", m1i=m_pre, 
+                                 m2i=m_change, sd1i=sd_pre, ni=n_post, ri=ri, data = filter(data, increase_decrease == "decrease" & is.na(m_post)) |>
+                                   mutate(m_pre = 0)
+  )
+  
+  data <- rbind(data_increase, data_decrease, data_increase_change, data_decrease_change)
 }
 
 filter_function_data <- function(data) {
