@@ -1,0 +1,117 @@
+---
+articletitle: |
+  Demo format to use as template for an article submitted to the SportRxiv preprint server
+# shorttitle: "Doe et al. (2022)" # usually auto-generated
+format: sportrxiv-pdf
+author:
+  - name: John Doe
+    affiliations:
+      - ref: 1
+      - ref: 2
+    orcid: 0000-0000-0000-0000
+    corresponding: true
+    email: JD@example.org
+  - name: Second Person
+    affiliations:
+      - ref: 1
+  - name: Third Person
+    affiliations:
+      - ref: 2
+affiliations:
+      - id: 1
+        name: One Affiliation
+      - id: 2
+        name: Another Affiliation
+abstract: |
+  Place your abstract here. Use Markdown to style the abstract, e.g. write `*word*` to print a *word* in italics. You can use the Latex command `\newline\` to create a linebreak in the abstract. \newline\ *Explanation*: The second backslash ensures that styling can be applied directly after the linebreak. This document is only a demo explaining how to use the template. This document is only a demo explaining how to use the template. This document is only a demo explaining how to use the template. This document is only a demo explaining how to use the template. This document is only a demo explaining how to use the template. This document is only a demo explaining how to use the template. This document is only a demo explaining how to use the template.
+license-type: ccby # change if neccessary
+# year: 2025 # defaults to current year
+keywords: [template, demo, exercise science] # optional
+# optional link to Supplementary Material:
+suppl-link: https://osf.io/ 
+reference-section-title: References
+printnote: "PREPRINT - NOT PEER REVIEWED" # if post print, include "POSTPRINT" then link to the published article
+bibliography: bibliography.bib  
+pdf-engine: xelatex
+---
+
+# Introduction
+
+This is a template for submissions to the [SportRxiv](https://sportrxiv.org/index.php/server) pre-print server. It uses [Quarto](https://quarto.org/) to generate a PDF file in the desired style.
+
+To get this template set up on your device, follow the instructions on [GitHub](https://github.com/smnnlt/sportrxiv/).
+
+Once everything is in place, you can start by editing the .qmd file. First, replace the `articletitle`, `author` and `affiliation` info in the YAML header at the top of the document. Render the document in an appropriate GUI (e.g. R Studio, Jupyter Lab, VS Studio) or via the command line to see the resulting PDF file. Then modify the `abstract`, `keywords` and optionally other variables of the YAML header.
+
+To write the main text of your article you can use [Markdown syntax](https://www.markdownguide.org/basic-syntax/). You can use *italics*, [links](https://www.urbandictionary.com/define.php?term=Link), or
+
+-   Lists
+-   Either
+-   ordered
+-   or unordered
+
+# Methods
+
+## Citations and References
+
+Use the `bibliography.bib` file as your reference library. You can cite references in the text [@allaire2022]. The easiest way to streamline this process, is by using the Visual Editor for Quarto in R Studio in combination with Zotero. This allows you to insert citations from your Zotero data base, while simultaneously updating your .bib file.
+
+## Figures and Tables
+
+You can include Figures and Tables via the Markdown syntax. A different approach is to include/generate these via code chunks.
+
+## Code Chunks
+
+You can insert Quarto code chunk to render arbitrary code (e.g. R, Python, Julia, ...). By default, only the output of code-chunks is displayed, but you can override this with the local code-chunk options.
+
+## Math
+
+You can display math using LaTex either inline $x = \sigma²$ or in blocks:
+
+$$
+f(x) = {{1}\over{\sigma}\sqrt{2\pi}}e^{-{1\over{2}}({x-\mu\over{\sigma}})^2}
+$$ {#eq-norm}
+
+Insert an equation label at the end of the equation to create the equation number on the right side.
+
+## Cross References
+
+You can create cross references to images, tables and equations. You first need to insert an reference label (e.g.{#eq-norm}) next to the part you want to reference to. Then you can link to it in your Markdown text, for example @eq-norm.
+
+# Results
+
+You may change the general structure of the document by creating new or modifying existing (sub)headings.
+
+# Discussion
+
+Place your discussion here
+
+# Summary
+
+Here is my summary.
+
+# Contributions
+
+Authors should report the contributions of each author in the a specific contribution section based on the guidelines set forth by the International Committee of Medical Journal Editors.
+
+Please indicate author contributions as clearly as possible, according to the following criteria:
+
+-   Substantial contributions to conception and design
+-   Acquisition of data
+-   Analysis and interpretation of data
+-   Drafting the article or revising it critically for important intellectual content
+-   Final approval of the version to be published
+
+# Acknowledgements
+
+People who contributed to the work but do not fit our author criteria should be listed in the acknowledgements, along with their contributions. You must ensure that anyone named in the acknowledgements agrees to being so named.
+
+Funding sources should not be included in the acknowledgements, but in the section below.
+
+# Funding Information
+
+Please provide a list of the sources of funding, as well as the relevant grant numbers, where possible. List the authors associated with specific funding sources. You will also enter this information in a form during the submission process, but it must be repeated here.
+
+# Data and Supplementary Material Accessibility
+
+This should list the database(s) and, if appropriate, the respective accession numbers and DOIs for all data or supplementary material for the manuscript that has been made publicly available on a trusted digital repository. If no data, code, or supplementary material are available for this manuscript then the reason for this should be explained here.
