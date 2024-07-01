@@ -1,117 +1,223 @@
 ---
 articletitle: |
-  Demo format to use as template for an article submitted to the SportRxiv preprint server
-# shorttitle: "Doe et al. (2022)" # usually auto-generated
-format: sportrxiv-pdf
+  Machine-based resistance training improves functional capacity in older adults: a systematic review and meta-analysis
+format: 
+  sportrxiv-pdf:
+    include-in-header:
+      text: |
+       \usepackage[font=scriptsize]{caption}
+       \usepackage{lscape}
+        \newcommand{\blandscape}{\begin{landscape}}
+        \newcommand{\elandscape}{\end{landscape}}
 author:
-  - name: John Doe
+  - name: Archie Kirk
     affiliations:
       - ref: 1
-      - ref: 2
-    orcid: 0000-0000-0000-0000
+  - name: James Steele
+    affiliations:
+      - ref: 1
+    orcid: 0000-0002-8003-0757
+  - name: James Fisher
+    affiliations:
+      - ref: 1
+    orcid: 0000-0002-6013-8402
     corresponding: true
-    email: JD@example.org
-  - name: Second Person
-    affiliations:
-      - ref: 1
-  - name: Third Person
-    affiliations:
-      - ref: 2
+    email: jpfisheruk@outlook.com
 affiliations:
       - id: 1
-        name: One Affiliation
-      - id: 2
-        name: Another Affiliation
+        name: Department of Sport and Health, Solent University, UK
 abstract: |
-  Place your abstract here. Use Markdown to style the abstract, e.g. write `*word*` to print a *word* in italics. You can use the Latex command `\newline\` to create a linebreak in the abstract. \newline\ *Explanation*: The second backslash ensures that styling can be applied directly after the linebreak. This document is only a demo explaining how to use the template. This document is only a demo explaining how to use the template. This document is only a demo explaining how to use the template. This document is only a demo explaining how to use the template. This document is only a demo explaining how to use the template. This document is only a demo explaining how to use the template. This document is only a demo explaining how to use the template.
+  Resistance training is evidenced to positively impact functional performance of older adults which serves to maintain independence and quality of life, preventing or delaying institutionalisation or hospitalisation. It has been proposed that training interventions should implement resistance and balance exercises associated with movements needed in everyday life, following a principle of “train the movement, not the muscle”. However, this strength training philosophy presents challenges, and the use of resistance machines might present an efficacious alternative. The aim of this systematic review and meta-analysis was to explore the impact of machine-based resistance training upon strength and functional capacity in older adults. A PubMed/MEDLINE search was conducted, and following screening 17, articles met inclusion criteria for the systematic review, 15 of which were included in the meta-analysis for functional outcomes, and 11 of which were included in the meta-analysis for strength outcomes, respectively. Analyses revealed significant standardised mean change in favour of machine-based resistance training for functional outcomes (0.72, 95% CIs 0.39 to 1.07) and strength outcomes (0.71, 95% CIs 0.34 to 1.08) compared to control conditions (functional = 0.09, 95% CIs -0.1 to 0.28, strength = 0.1, 95% CIs -0.05 to 0.24). Substantial heterogeneity was noted in the manipulation of resistance training variables (load, effort, volume, etc.) and in the magnitude of effects between studies. In conclusion, the current data supports that significant strength and functional performance outcomes are attainable using uncomplicated, machine-based resistance training.
 license-type: ccby # change if neccessary
 # year: 2025 # defaults to current year
-keywords: [template, demo, exercise science] # optional
+keywords: [Generality of strength, specificity, transfer, activities of daily living] # optional
 # optional link to Supplementary Material:
-suppl-link: https://osf.io/ 
+suppl-link: https://osf.io/5fjq3/ 
 reference-section-title: References
 printnote: "PREPRINT - NOT PEER REVIEWED" # if post print, include "POSTPRINT" then link to the published article
-bibliography: bibliography.bib  
+bibliography: references.bib  
 pdf-engine: xelatex
+execute: 
+  echo: false
+  message: false
+  warning: false
 ---
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| include: false
+
+knitr::opts_chunk$set(echo = TRUE, fig.align="center")
+options(knitr.kable.NA = '')
+
+library(tidyverse)
+library(kableExtra)
+library(patchwork)
+
+```
 
 # Introduction
 
-This is a template for submissions to the [SportRxiv](https://sportrxiv.org/index.php/server) pre-print server. It uses [Quarto](https://quarto.org/) to generate a PDF file in the desired style.
+Physical decline with age includes dynapenia and sarcopenia (loss of strength and muscle mass, respectively [@clarkSarcopeniaDynapenia2008]), as well as decreases in bone mineral density [@demontieroAgingBoneLoss2012]. The loss of strength and muscle mass can contribute to diminished balance and increased risk of falls, and in combination with reductions in bone density - a greater likelihood of fractures, and reduced healing capacity [@borosPhysiologyAgeingMusculoskeletal2017]. Historically, strength and muscle mass have been independent predictors of longevity [@ruizAssociationMuscularStrength2008; @srikanthanMuscleMassIndex2014]. However, and perhaps more importantly, the associated function likely serves to maintain independence and quality of life, preventing or delaying institutionalisation or hospitalisation.
 
-To get this template set up on your device, follow the instructions on [GitHub](https://github.com/smnnlt/sportrxiv/).
+Resistance training is well-documented to support reductions in blood pressure [@correiaStrengthTrainingArterial2023], increases in bone mineral density [@obryanProgressiveResistanceTraining2022], improvements in metabolic health markers [@ihalainenStrengthTrainingImproves2019], and improve physical function in older adults [@chmeloHeterogeneityPhysicalFunction2015; @bullWorldHealthOrganization2020]. However, it has been proposed that any intervention should implement resistance and balance exercises associated with movements needed in older adults' everyday life [@moratTrainingFunctionalMovement2015]. In this sense, training specificity might include complex movement patterns which replicate direction of force as well as providing instability through multi-planar movements, or at the least multi-planar capacity (e.g., the use of free weights, bands, cables, or bodyweight - where stabilising a resistance is required) to improve balance, mobility, strength, and activities of daily living [@liuSystematicReviewFunctional2014]. Indeed, a recent meta-analysis [@spitzQuantifyingGeneralityStrength2023] supported the notion of specificity within adaptation; that strength increases showed larger Cohen's dz values in strength exercises being trained. However, the authors also report some generality of strength adaptation - that an individual can make strength and/or functional improvements in movements or exercises that were not trained but recruit similar musculature [@bucknerGeneralityStrengthAdaptation2019].
 
-Once everything is in place, you can start by editing the .qmd file. First, replace the `articletitle`, `author` and `affiliation` info in the YAML header at the top of the document. Render the document in an appropriate GUI (e.g. R Studio, Jupyter Lab, VS Studio) or via the command line to see the resulting PDF file. Then modify the `abstract`, `keywords` and optionally other variables of the YAML header.
+While the benefits of functional training are recognised [@liuSystematicReviewFunctional2014], these methods are not without limitation. For example, functional training methods discussed within the literature including the use of bands, bodyweight, and weight cuffs combined with instability might limit the extent of muscular overload (due in part to the instability itself) and be difficult to quantify and progress over the duration of a training programme [@mendeProgressiveMachinebasedResistance2022; @safonsEffectsResistanceTraining2021]. Furthermore, free-weights are documented to have a greater injury risk (as well as severity of injury) compared to training using resistance machines [@kerrEpidemiologyWeightTrainingrelated2010]. In fact, reviews have supported the use of uncomplicated machine-based resistance training for increases in strength and muscle mass [@fisherEvidenceBasedResistanceTraining2011a; @fisherEVIDENCEBASEDRESISTANCE2013] as well as health benefits [@fisherMinimalDoseApproach2017a]. Finally, and since functional training methods might add a degree of difficulty (e.g., training technique, programme design, exercise selection, load progression, force direction, and strength curve) the use of resistance machines might also serve to overcome perceived complexity - an often-cited barrier to resistance training adherence of [@winettInitiatingMaintainingResistance2009].
 
-To write the main text of your article you can use [Markdown syntax](https://www.markdownguide.org/basic-syntax/). You can use *italics*, [links](https://www.urbandictionary.com/define.php?term=Link), or
-
--   Lists
--   Either
--   ordered
--   or unordered
+Based on the principle of specificity we recognise that the use of resistance machines, limited in plane of motion, can train only the movement and the muscles involved in each specific exercise, and thus, any transference to functional capacity outcomes is representative of a generality of strength (e.g., an ability to use muscles trained in one exercise in a separate and seemingly unrelated task). With this in mind the primary aim of this systematic review and meta-analysis was to explore the impact of machine-based resistance training upon strength and functional capacity in older adults. The secondary aim was to review the training programme variables (e.g., study duration, frequency, volume, exercise selection, load, and intensity of effort) in relation to the outcome variables (e.g., functional capacity tests).
 
 # Methods
 
-## Citations and References
+This systematic review was performed commensurate with Preferred Reporting Items for Systematic Reviews and Meta Analyses (PRISMA) guidelines [@pagePRISMA2020Statement2021]. To locate relevant studies, we comprehensively searched the PubMed/MEDLINE using the following Boolean search syntax: ("resistance training" OR "strength training" OR "weight training") AND ("timed up and go" OR "sit to stand" OR "functional" OR "functional capacity" OR "functional outcomes"). In addition, we screened the reference lists of articles retrieved and applicable review papers to uncover any additional studies that might meet inclusion criteria. The search process was carried out separately by two researchers (JPF and AK). The initial search consisted of screening all titles for duplication, followed by abstracts for studies potentially meeting inclusion/exclusion criteria. For papers deemed potentially relevant, full texts were evaluated and decisions were then made as to whether a given study warranted inclusion. The search was finalised February of 2024.
 
-Use the `bibliography.bib` file as your reference library. You can cite references in the text [@allaire2022]. The easiest way to streamline this process, is by using the Visual Editor for Quarto in R Studio in combination with Zotero. This allows you to insert citations from your Zotero data base, while simultaneously updating your .bib file.
+## Inclusion/Exclusion criteria
 
-## Figures and Tables
+The studies that were sourced and went through the screening process had to meet the following inclusion criteria: 1) the article must be published in full-text English, 2). the age of participants had to be older than 60 years, 3). the population sampled were characterised as being healthy or asymptomatic (the decision to choose only apparently healthy adults eliminated the risk of selection bias as results for clinical participants might not be representative of typical adaptations or given the arm-based approach used for meta-analysis might be more likely to be influenced by regression to the mean and natural history effects), 4). the study design had to have a pre- and post-test measurement for functional capacity by including either a timed up and go and/or a sit to stand test, 5). the training intervention had to be at least 6 weeks in duration, 6). the training intervention could not include free-weight or other (e.g., dumbbells, barbells, kettlebells, sandbags, resistance bands, etc.) resistance types which might represent functionally similar/specific exercise [@unhjemFunctionalPerformanceAge2019]. Exclusion criteria included anything contradictory to the inclusion criteria in addition to any patients reported as previously suffering from long-term medical conditions which might impede functional performance or inhibit recovery (including but not limited to cancer, stroke, heart disease, diabetes, hypertension, Parkinson's, osteoporosis), and/or previous/current musculoskeletal injuries (for example, knee replacement, hip replacement, ACL reconstruction, etc.). Finally, any degree of concurrent/additional training, which included aerobic exercise, balance exercises, stretching, calisthenics, or other were excluded since these additional training modalities might confound estimation of the effects of machine-based resistance training alone.
 
-You can include Figures and Tables via the Markdown syntax. A different approach is to include/generate these via code chunks.
+Specifically, we chose the two measures of functional capacity; timed up and go and sit to stand because of the acceptance and simplicity of the protocols resulting in the frequency of their use in assessment, and their relationship to other functional measures. The timed up and go requires a participant to move from a seated position to stand and walk to/around an object and return to their seat [@sprintAutomatingClinicalAssessments2015]. This test is used to assess walking speed/ability, dynamic balance, fall risk, and agility, and is correlated to the Berg balance score (r = 0.81), gait speed (r= 0.60), and the Barthel index of activities of daily living (ADL's; r = 0.78) [@shumway-cookPredictingProbabilityFalls2000; @podsiadloTimedGoTest1991]. The sit to stand test is typically performed as either the time to perform 5 movements from seated to standing upright, or the total number of vertical stands from a seated position within a 30second time (both performed with the hands folded across the chest to prevent the use of upper body strength[@balachandranPowerTrainingUsing2017]). The sit to stand test has a high interrater reliability (ICC=0.94; [@munoz-bermejoTestRetestReliabilityFive2021]) and correlates well with other functional measures such as stair climb speed, walking speed (r=0.52), dynamic balance (r=0.65), and risk of falling [@jones30sChairstandTest1999; @bohannonSittostandTestPerformance2010]. It's also worth noting that the automation and objective quantification of these clinical assessments appears relatively simple with the use of an accelerometer found within a smart phone [@sprintAutomatingClinicalAssessments2015].
 
-## Code Chunks
+## Data Extraction
 
-You can insert Quarto code chunk to render arbitrary code (e.g. R, Python, Julia, ...). By default, only the output of code-chunks is displayed, but you can override this with the local code-chunk options.
+Where studies included multiple training conditions, only intervention groups which met the identified criteria and any respective non-training control groups were included in the review. Data was extracted for participant characteristics (age), intervention duration, training frequency, training volume, training load, repetition duration, and intensity of effort (Table 1; <https://osf.io/ujwm9>), and for resistance training exercises and resistance type (Table 2; <https://osf.io/4gubw>). Further data was extracted for functional capacity outcomes (e.g., sit to stand and timed up and go) and any strength outcomes from these studies including one repetition maximum tests or isometric maximal voluntary contractions. Where only figures were presented, data were acquired using online software (juicr package; [@lajeunesseJuicrAutomatedManual2021]).
 
-## Math
+## Methodological Quality
 
-You can display math using LaTex either inline $x = \sigma²$ or in blocks:
+Methodological quality of each study was evaluated using the Standard Method for Assessment of Resistance Training in Longitudinal Designs (SMART-LD) which has been used to validate the methodological quality of randomised control trials involving resistance training interventions with acceptable inter-rater reliability. This scale has been specifically developed for studies looking at resistance training interventions and appears more applicable than using the Physiotherapy evidence-based scale (PEDro scale) [@schoenfeldSMARTLDToolCritically2023]. The SMART-LD includes 20 criteria across 5 categories with qualitative methodological ratings for assessment of: "good quality" (16-20), "fair quality" (12-15) and "poor quality" (0-11).
 
-$$
-f(x) = {{1}\over{\sigma}\sqrt{2\pi}}e^{-{1\over{2}}({x-\mu\over{\sigma}})^2}
-$$ {#eq-norm}
+## Statistical Analysis
 
-Insert an equation label at the end of the equation to create the equation number on the right side.
+Statistical analysis of the data extracted was performed in R, (v 4.3.3; R Core Team, https://www.r-project.org/) and RStudio (v 2023.06.1; Posit, https://posit.co/). All code utilised for data preparation and analyses are available in either the Open Science Framework page for this project <https://osf.io/5fjq3/> or the corresponding GitHub repository <https://github.com/jamessteeleii/older_adults_RT_machines_MA>. The present analysis was not pre-registered as we had no a priori hypotheses and thus, given the pilot nature of this study, was considered exploratory and aimed at parameter estimation [@cummingNewStatisticsWhy2014] within a Bayesian meta-analytic framework [@kruschkeBayesianNewStatistics2018]. For all analyses model parameter estimates and their precision, along with conclusions based upon them, were interpreted continuously and probabilistically, considering data quality, plausibility of effect, and previous literature, all within the context of each model. The `renv` package [@usheyRenvProjectEnvironments2023] was used for package version reproducibility and a function based analysis pipeline using the `targets` package [@landauTargetsDynamicFunctionOriented2023] was employed (the analysis pipeline can be viewed by downloading the R Project and running the function `targets::tar_visnetwork()`). Standardised effect sizes were all calculated using the `metafor` package [@viechtbauerMetaforMetaAnalysisPackage2023]. The main package `brms` [@burknerBrmsBayesianRegression2023] was used in fitting all the Bayesian meta-analysis models. Prior and posterior draws were taken using `tidybayes` [@kayTidybayesTidyData2023] and `marginaleffects` [@arel-bundockMarginaleffectsPredictionsComparisons2023] packages. All visualisations were created using `ggplot2` [@wickhamGgplot2CreateElegant2023], `tidybayes`, and the `patchwork` [@pedersenPatchworkComposerPlots2023] packages. Where data to be extracted from included studies was reported in plots only we used the `juicr` package to extract this data [@lajeunesseJuicrAutomatedManual2021] and the reproducible reports for this can be found in the online supplementary materials.
 
-## Cross References
-
-You can create cross references to images, tables and equations. You first need to insert an reference label (e.g.{#eq-norm}) next to the part you want to reference to. Then you can link to it in your Markdown text, for example @eq-norm.
+As noted, we adopted a Bayesian approach to the present meta-analysis. Specifically, we adopted an arm-based multiple treatment comparison (i.e., network) type model given that for the studies identified some, but not all, included a non-training control arm in addition to the machine-based RT arm [@hongBayesianMissingData2016]. In typical contrast-based meta-analyses data is limited to the effect sizes for paired contrasts between arm and thus studies that include both arm (i.e., relative effects between non-training control vs machine based RT conditions); however, in arm-based analyses the data are the absolute effects within each arm and information is borrowed across studies to enable both within condition absolute, and between condition relative contrasts to be estimated. As in the present analysis we are only comparing two conditions we do not examine ranking methods as are typical in multiple treatment comparison models, but instead we focus on reporting the between condition relative contrast for non-training control vs machine-based RT. We fit two models: one for all function outcomes reported and one for all strength outcomes reported. Pre- to post-intervention period standardised effect sizes were calculated using Becker's $d$ [@beckerSynthesizingStandardizedMeanchange1988] for each outcome within each arm within each study. As such, data were hierarchical across three levels (i.e., effects within arms within studies) and so we included random intercepts using implicit nested coding across these levels. Given the arm-based model, we included a fixed categorical predictor using dummy coding indicating which condition a given arm within the study belonged to (i.e., non-training control or machine-based RT where the former was the intercept) and also allowed for this to be a random effect to enable the partial pooling of information across studies where there were not direct between condition relative contrasts present. We did not have any prior intuition or data available for the specific intervention in this population that was not included in the likelihood for the model anyway and so we adopted uninformed default weakly regularising priors for all parameters. We fit each model using four Monte Carlo Markov Chains each with 2000 warmup and 6000 sampling iterations. Trace plots were produced along with $\hat{R}$ values to examine whether chains had converged, and posterior predictive checks for each model were also examined to understand the model implied distributions. These all showed good convergence with all $\hat{R}$ values close to 1 and posterior predictive checks seemed appropriate distributions for the observed data (all diagnostic plots can be seen in the supplementary materials: <https://osf.io/z9u7s>). From each model we obtained draws from the posterior distributions for the conditional absolute estimates for each condition by study, the global grand mean absolute estimates for each condition, and the between condition relative contrast for non-training control vs machine-based RT in order to present probability density functions visually, and also to calculate mean and 95% quantile intervals (i.e., 'credible' or 'compatibility' intervals) for each estimate. These gave us the most probable value of the parameter in addition to the range from 2.5% to 97.5% percentiles.
 
 # Results
 
-You may change the general structure of the document by creating new or modifying existing (sub)headings.
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+
+targets::tar_load(
+  c(
+  model_function,
+  tidy_model_function,
+  study_function_plot,
+  meta_function_plot,
+  contrast_function_plot,
+  model_strength,
+  tidy_model_strength,
+  study_strength_plot,
+  meta_strength_plot,
+  contrast_strength_plot
+  )
+)
+
+tidy_model_function <- tidy_model_function |>
+  mutate(across(where(is.numeric), round, 2))
+
+tidy_model_strength <- tidy_model_strength |>
+  mutate(across(where(is.numeric), round, 2))
+
+
+n_conditions_function <- model_function$data |> group_by(group_code, training_control) |> slice_head() |> ungroup() |> count(training_control)
+  
+
+n_conditions_strength <- model_strength$data |> group_by(group_code, training_control) |> slice_head() |> ungroup() |> count(training_control)
+
+```
+
+## Search Results
+
+![PRISMA Flow chart for screening process](plots/PRISMA.png){#fig-prisma width="75%" height="75%"}
+
+For this review a total of 3249 studies were identified through database searching only. Once duplicates had been removed 1252 papers were screened for potential eligibility through title screening. This process resulted in the removal of a further 1115 papers consequently leaving 137 research articles. Following abstract screening 54 papers were excluded, leaving 83 research articles. Following full-text screening of research intervention and participant details 15 articles met the inclusion criteria stated above. Two additional articles were found after searching reference lists bringing the total to 17 articles included in this systematic review [@safonsEffectsResistanceTraining2021; @balachandranPowerTrainingUsing2017; @borges-silvaDoesHeavyResistanceTraining2022; @buskardOptimalApproachLoad2019; @filhoEffectsDifferentTypes2022; @hansonEffectsStrengthTraining2009; @johnenFeasibilityMachineVs2018; @leeEffectivenessCommunitydeliveredPneumatic2021; @leendersElderlyMenWomen2013; @mouraFunctionalCapacityImproves2018; @pintoShorttermStrengthTraining2014; @rajEffectsEccentricallyBiased2012; @romaEffectsResistanceTraining2013; @sayersImprovementFunctionalPerformance2016; @schaunHighvelocityResistanceTraining2022; @schlichtEffectIntenseStrength2001; @walkerModerateLoadMuscularEndurance2017]. The screening process is outlined in @fig-prisma.
+
+## Quality assessment
+
+Using the SMART-LD scale, 8 studies were considered good quality (values of 16-20/20) and 9 were considered fair quality (values of 12-15/20). Outcome for SMART-LD is presented in Table 3 (<https://osf.io/x3zp7>).
+
+## Participant Characteristics
+
+All training studies reported participants as being untrained (not currently, or historically engaging in any strength training intervention). In total there were 897 participants across the 17 studies, 630 of which were female (70%). Four studies included only female participants [@safonsEffectsResistanceTraining2021; @borges-silvaDoesHeavyResistanceTraining2022; @filhoEffectsDifferentTypes2022; @pintoShorttermStrengthTraining2014], while the remaining studies included both male and female participants. Mean age within the studies varied from 63.9 years [@mouraFunctionalCapacityImproves2018] to 78.9 years [@johnenFeasibilityMachineVs2018], and when considered in view of participant samples from each study, mean age across the 17 studies was 70.2 years.
+
+## Exercise selection and resistance type
+
+Of the 17 studies, 6 used pneumatic resistance machines [@safonsEffectsResistanceTraining2021; @balachandranPowerTrainingUsing2017; @buskardOptimalApproachLoad2019; @hansonEffectsStrengthTraining2009; @leeEffectivenessCommunitydeliveredPneumatic2021; @sayersImprovementFunctionalPerformance2016], one used a plate loaded resistance machine [@balachandranPowerTrainingUsing2017], 7 studies used selectorized resistance machines [@borges-silvaDoesHeavyResistanceTraining2022; @johnenFeasibilityMachineVs2018; @leendersElderlyMenWomen2013; @mouraFunctionalCapacityImproves2018; @romaEffectsResistanceTraining2013; @schlichtEffectIntenseStrength2001; @walkerModerateLoadMuscularEndurance2017], and 4 studies did not clarify resistance type, or manufacturer and model (though did state the use of machine-based resistance). Three studies considered only lower body resistance training exercises [@pintoShorttermStrengthTraining2014; @sayersImprovementFunctionalPerformance2016; @schlichtEffectIntenseStrength2001], and the remainder included both upper- and lower-body exercises. The lower body exercises used with the highest frequency were leg press, leg extension, and leg curl, in 15-, 10-, and 8-studies, respectively. The upper body exercises used with the highest frequency were chest press, latissimus dorsi pulldown, and seated row, in 11-, 8-, and 8- studies, respectively. On average, studies included 6 different exercises (3 upper body and 3 lower body), with a maximum of 12 different exercises [@balachandranPowerTrainingUsing2017], and a minimum of 2 different [@sayersImprovementFunctionalPerformance2016]. See Table 2 (<https://osf.io/4gubw>) for full details of exercises and resistance types.
+
+## Study Duration and Frequency
+
+From the 18 studies included, duration ranged from a minimum of 6-weeks [@pintoShorttermStrengthTraining2014], up to 12 months [@romaEffectsResistanceTraining2013]. Median study duration was 12-weeks (IQR=6). Within the studies training frequency was either 2 or 3 x / week, with a median frequency of 2 (IQR=2). Accepting that not all participants had 100% attendance in each study, maximum number of possible workouts per intervention ranged from 12 training sessions [@pintoShorttermStrengthTraining2014] to 104 training sessions [@romaEffectsResistanceTraining2013], with median total training volume of 25.8 training sessions (IQR=12).
+
+## Volume, Effort, Load, and repetition duration
+
+Some of the studies utilised simple training programmes where volume of sets and repetitions did not vary throughout the intervention [@mouraFunctionalCapacityImproves2018], some studies incorporated a progression of sets and repetitions as the intervention continued [@leeEffectivenessCommunitydeliveredPneumatic2021], while other studies had multiple training groups which were often prescribed different volumes of sets and repetitions [@filhoEffectsDifferentTypes2022]. While table 1 (<https://osf.io/ujwm9>) reports training volume for each study in detail, the average sets and repetitions in each study was calculated and from this the average across all studies is 2.5 ±0.6sets of 11.0 ±3.0repetitions. Ratings of perception of effort were reported within 11 of 17 studies, however - in different formats between studies, e.g., 10-point scale [@balachandranPowerTrainingUsing2017; @buskardOptimalApproachLoad2019; @filhoEffectsDifferentTypes2022], 6-20-point scale [@johnenFeasibilityMachineVs2018; @rajEffectsEccentricallyBiased2012], or actual effort was proxied by the specific training protocol including use of repetition maximum [@safonsEffectsResistanceTraining2021; @hansonEffectsStrengthTraining2009; @leeEffectivenessCommunitydeliveredPneumatic2021], and concentric failure [@borges-silvaDoesHeavyResistanceTraining2022; @pintoShorttermStrengthTraining2014; @walkerModerateLoadMuscularEndurance2017] to reflect maximal effort. The remaining 6 studies did not report effort of participants in any format [@leendersElderlyMenWomen2013; @mouraFunctionalCapacityImproves2018; @romaEffectsResistanceTraining2013; @sayersImprovementFunctionalPerformance2016; @schaunHighvelocityResistanceTraining2022; @schlichtEffectIntenseStrength2001]. Table 1 (<https://osf.io/ujwm9>) includes all details of the effort measures reported.
+
+Most studies reported training load as a % 1-repetition maximum (RM), or occasionally % other RM (e.g., 10RM [@filhoEffectsDifferentTypes2022]; 8RM [@johnenFeasibilityMachineVs2018]). In many cases the training load varied throughout the intervention or between training conditions where there were multiple training groups. Four studies did not report a training load [@safonsEffectsResistanceTraining2021; @balachandranPowerTrainingUsing2017; @pintoShorttermStrengthTraining2014; @romaEffectsResistanceTraining2013]. Where studies reported %10RM or %8RM, table 17.8 from NSCA [@haffEssentialsStrengthTraining2015] was used to calculate %1RM. For ease of consideration average load was calculated as the mean load across all intervention groups across all studies as = 63 ±23 %1RM.
+
+Repetition duration was not reported in 8 of the 17 studies [@borges-silvaDoesHeavyResistanceTraining2022; @johnenFeasibilityMachineVs2018; @leeEffectivenessCommunitydeliveredPneumatic2021; @leendersElderlyMenWomen2013; @pintoShorttermStrengthTraining2014; @rajEffectsEccentricallyBiased2012; @romaEffectsResistanceTraining2013; @schlichtEffectIntenseStrength2001]. Four studies reported concentric muscle actions as being performed as fast as possible [@balachandranPowerTrainingUsing2017; @buskardOptimalApproachLoad2019; @sayersImprovementFunctionalPerformance2016; @schaunHighvelocityResistanceTraining2022]. The remaining five studies reported concentric muscle actions as \~2seconds, and all 9 studies which reported repetition duration stated the eccentric muscle action as \~2seconds.
+
+## Functional Outcomes
+
+The model examining functional outcomes included `r length(unique(model_function$data$study_code))` studies containing `r length(unique(model_function$data$group_code))` separate arms (`r n_conditions_function[1,2]` non-training control and `r n_conditions_function[2,2]` machine-based RT) reporting `r length(unique(model_function$data$es_code))` within arm effects. The global grand mean estimate for the between condition relative contrast (i.e., machine-based RT minus non-training control) was `r tidy_model_function$estimate[2]` \[95% credible interval: `r tidy_model_function$conf.low[2]`,`r tidy_model_function$conf.high[2]`\], though there was considerable heterogeneity in the magnitude of effects between studies ($\tau_{Condition (training)}$ = `r tidy_model_function$estimate[6]` \[95% credible interval: `r tidy_model_function$conf.low[6]`,`r tidy_model_function$conf.high[6]`\]). An ordered forest plot of conditional study level estimates for absolute within condition effects, the global grand mean estimates for absolute within condition effects, and the global grand mean estimate for the between condition relative contrast including interval estimates and posterior probability distributions are shown in @fig-function-model
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| label: fig-function-model 
+#| fig-width: 10
+#| fig-height: 10
+#| fig-cap: An ordered forest plot for functional outcomes of conditional study level estimates for absolute within condition effects including individual effect sizes as points (top panel), the global grand mean estimates for absolute within condition effects (bottom left panel), and the global grand mean estimate for the between condition relative contrast (top right panel) including interval estimates and posterior probability distributions
+
+(study_function_plot / (meta_function_plot + contrast_function_plot)) + 
+    plot_annotation(title = "Meta-Analysis of Prior Studies Examining the Effects of Machine Based Resistance Training on Function",
+                    caption = "Point estimates and 95% quantile intervals reported") +
+    plot_layout(guides = "collect", axis_titles = "collect",
+                widths = c(2,1,1))  &
+    theme(axis.title.x = element_text(size=10),
+          legend.position = "bottom")
+```
+
+## Strength Outcomes
+
+The model examining strength outcomes included `r length(unique(model_strength$data$study_code))` studies containing `r length(unique(model_strength$data$group_code))` separate arms (`r n_conditions_strength[1,2]` non-training control and `r n_conditions_strength[2,2]` machine-based RT) reporting `r length(unique(model_strength$data$es_code))` within arm effects. The global grand mean estimate for the between condition relative contrast (i.e., machine-based RT minus non-training control) was `r tidy_model_strength$estimate[2]` \[95% credible interval: `r tidy_model_strength$conf.low[2]`,`r tidy_model_strength$conf.high[2]`\], though there was considerable heterogeneity in the magnitude of effects between studies ($\tau_{Condition (training)}$ = `r tidy_model_strength$estimate[6]` \[95% credible interval: `r tidy_model_strength$conf.low[6]`,`r tidy_model_strength$conf.high[6]`\]). An ordered forest plot of conditional study level estimates for absolute within condition effects, the global grand mean estimates for absolute within condition effects, and the global grand mean estimate for the between condition relative contrast including interval estimates and posterior probability distributions are shown in @fig-strength-model
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| label: fig-strength-model 
+#| fig-width: 10
+#| fig-height: 10
+#| fig-cap: An ordered forest plot for strength outcomes of conditional study level estimates for absolute within condition effects including individual effect sizes as points (top panel), the global grand mean estimates for absolute within condition effects (bottom left panel), and the global grand mean estimate for the between condition relative contrast (top right panel) including interval estimates and posterior probability distributions
+
+(study_strength_plot / (meta_strength_plot + contrast_strength_plot)) + 
+    plot_annotation(title = "Meta-Analysis of Prior Studies Examining the Effects of Machine Based Resistance Training on Strength",
+                    caption = "Point estimates and 95% quantile intervals reported") +
+    plot_layout(guides = "collect", axis_titles = "collect",
+                widths = c(2,1,1))  &
+    theme(axis.title.x = element_text(size=10),
+          legend.position = "bottom")
+```
 
 # Discussion
 
-Place your discussion here
+This represents the first systematic review with meta-analysis considering the effects of machine-based resistance training alone upon functional outcomes in older adults. A previous review appears superficially similar [@mendeProgressiveMachinebasedResistance2022], however, the authors included anthropometric changes relating to sarcopenia, as well as studies which had incorporated multi-modal training methods (e.g., cardiovascular-, free-weight-, and balance-training). Instead, we were interested specifically in whether training using non-specific a non-specific modality, namely machine-based resistance training, would alone result in improvements in functional outcomes in older adults. Firstly, our data confirmed significant strength increases as a result of machine-based strength training interventions. Values were of a similar magnitude to those reported previously in both large scale meta-analysis [@steeleMetaanalysisVariationSport2023a] and in a large sample including older adults [@steeleLongTermTimeCourseStrength2023]. While this might be expected, it should not be overlooked. There is a recognised and well documented decline in strength in females \>40 years and males \>60 years [@haynesAgeSexrelatedDecline2020]. Any methods which can mitigate or reverse this decline are likely to be important for prolonged health and longevity. Machine-based resistance training has been presented as a time-efficient and uncomplicated approach to strength training [@fisherEvidenceBasedResistanceTraining2011a; @fisherMinimalDoseApproach2017a], and engagement in resistance training, along with concomitant increases in strength are associated with reductions in all-cause mortality [@saeidifardAssociationResistanceTraining2019; @shailendraResistanceTrainingMortality2022].
 
-# Summary
+Secondly, our analyses show significant improvements in functional outcome measures as a result of machine-based resistance training in older adults. Specifically, we considered two measures of functional capacity; timed up and go and sit to stand. While we recognise alternate methods of measuring functional capacity exist, we elected to include only these two assessments because of their prevalence in the literature, their relationship with other activities of daily living [@podsiadloTimedGoTest1991; @shumway-cookPredictingProbabilityFalls2000; @jones30sChairstandTest1999; @bohannonSittostandTestPerformance2010], and because of the acceptance and simplicity of the protocols. Previous research has suggested a need for task specific training [@moratTrainingFunctionalMovement2015], and indeed strength transference is a continued area of research [@spitzQuantifyingGeneralityStrength2023]. Based on our analyses, we propose that there is not a need to attempt to perform balance tasks, replicate activities, or to recreate superficially similar motor schema (e.g., adding load to a movement). But rather that increasing muscular strength through uncomplicated machine-based resistance training, can then be applied to activities of daily living; or at the very least, a machine-based resistance training intervention alone can through the totality of its causal mechanisms improve functional outcomes. We believe this data adds to our understanding of training specificity and application of strength and posit that any recommendation to train a movement rather than a muscle might be unnecessary - our data suggests that a person can train a muscle(s) to be stronger and then apply that strength in seemingly unrelated tasks.
 
-Here is my summary.
+We should recognise that while this review included 17 empirical research studies, there was considerable disparity in application of training variables including, study duration, training volume, load, repetition duration, and effort. However, even the shortest duration intervention (6-weeks; [@pintoShorttermStrengthTraining2014]) reported considerable strength and functional outcome increases. While manipulation of these training variables might, in the future, support differing degrees of adaptation, at present, we suggest that the consistently positive outcomes reported herein permit a degree of freedom to all personal trainers or clinical exercise physiologists prescribing exercise to older adults.
 
-# Contributions
+## Limitations
 
-Authors should report the contributions of each author in the a specific contribution section based on the guidelines set forth by the International Committee of Medical Journal Editors.
+We wish to clarify that this study did not ask the question "do increases in strength from machine-based resistance training causally mediate improvements in functional capacity?". Thus, our comments above regarding the transference of strength remain speculative. We acknowledge that there might be disparity between strength increases on trained exercises and functional capacity outcomes. Further, that machine-based resistance training might improve functional measures even in an absence of detectible strength increases. For example, a person engaging in resistance training might experience increases in confidence or perception of health which manifest as improvements in physical function. However, our analyses presents evident and significant strength increases, as well as improvements in functional capacity measures as a result of strength training interventions. Thus, it seems reasonable to speculate that they may be causally related. Further, we should clarify that we are not opposed to alternate training methods which includes the use of free weights, bands, or most recently the use of a weighted vest [@paganTaskspecificResistanceTraining2024] or replication of functional tasks, when performed safely. However, our data supports that these are unnecessary at the initiation of a strength training intervention.
 
-Please indicate author contributions as clearly as possible, according to the following criteria:
+# Conclusion
 
--   Substantial contributions to conception and design
--   Acquisition of data
--   Analysis and interpretation of data
--   Drafting the article or revising it critically for important intellectual content
--   Final approval of the version to be published
+The present systematic review and meta-analysis has shown that uncomplicated, machine-based resistance training can increase strength as well as functional capacity. Such improvements might serve to preserve independence and improve quality of life. When considering the practical implications of these findings, it is important to recognise the consistently positive outcomes in relation to the heterogenous manipulation of training variables. We propose that personal trainers or clinicians working with older adults can prescribe a strength training intervention using resistance machines with leniency around other variables without a need to challenge balance or replicate movement patterns. Further research considering strength transference and specificity of adaptation should continue to compare strength and performance increases between superficially similar and seemingly unrelated tasks.
 
-# Acknowledgements
+# Statements and Declarations
 
-People who contributed to the work but do not fit our author criteria should be listed in the acknowledgements, along with their contributions. You must ensure that anyone named in the acknowledgements agrees to being so named.
-
-Funding sources should not be included in the acknowledgements, but in the section below.
-
-# Funding Information
-
-Please provide a list of the sources of funding, as well as the relevant grant numbers, where possible. List the authors associated with specific funding sources. You will also enter this information in a form during the submission process, but it must be repeated here.
-
-# Data and Supplementary Material Accessibility
-
-This should list the database(s) and, if appropriate, the respective accession numbers and DOIs for all data or supplementary material for the manuscript that has been made publicly available on a trusted digital repository. If no data, code, or supplementary material are available for this manuscript then the reason for this should be explained here.
+The authors received no funding for this piece of work. The authors declare no conflicts of interest. Data and code utilised for data preparation and analyses are available in the Open Science Framework page for this project https://osf.io/5fjq3/. As a systematic review and meta-analysis ethical approval was not required. Data searches were completed by AK and JF, data analyses were performed by JS and JF, the manuscript was written and approved by all authors.
