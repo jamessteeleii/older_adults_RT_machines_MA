@@ -163,11 +163,12 @@ plot_meta <- function(posterior_draws) {
       data = mutate_if(meta_labels,
                        is.numeric, round, 2),
       aes(
-        label = glue::glue("{draw} [{.lower}, {.upper}]"),
+        label = glue::glue("{signs::signs(draw,.01)} [{signs::signs(.lower,.01)}, {signs::signs(.upper,.01)}]"),
         x = draw, y = 0.1
       ),
       size = 3
     ) +
+    scale_x_continuous(labels = ~sub("-", "\u2212", .x)) +
     labs(
       x = "Standardised Mean Change",
       fill = "Condition",
@@ -204,12 +205,13 @@ plot_study <- function(data, posterior_draws) {
       data = mutate_if(study_labels,
                        is.numeric, round, 2),
       aes(
-        label = glue::glue("{training_control}: {draw} [{.lower}, {.upper}]"),
+        label = glue::glue("{training_control}: {signs::signs(draw,.01)} [{signs::signs(.lower,.01)}, {signs::signs(.upper,.01)}]"),
         x = 3, y =reorder(study, draw), group = training_control
       ),
       size = 2, position = position_dodge(width = 0.75),
       hjust = "inward"
     ) +
+    scale_x_continuous(labels = ~sub("-", "\u2212", .x)) +
     labs(
       x = "Standardised Mean Change",
       title = "Conditional Estimates for Condition by Study"
@@ -236,11 +238,12 @@ plot_contrast <- function(posterior_draws) {
       data = mutate_if(contrast_labels,
                        is.numeric, round, 2),
       aes(
-        label = glue::glue("{draw} [{.lower}, {.upper}]"),
+        label = glue::glue("{signs::signs(draw,.01)} [{signs::signs(.lower,.01)}, {signs::signs(.upper,.01)}]"),
         x = draw, y = 0.1
       ),
       size = 3
     ) +
+    scale_x_continuous(labels = ~sub("-", "\u2212", .x)) +
     labs(
       x = "Standardised Mean Change",
       title = "Contrasts Between Conditions (Training - Control)"
