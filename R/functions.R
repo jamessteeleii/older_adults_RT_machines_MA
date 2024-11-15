@@ -183,9 +183,52 @@ plot_meta <- function(posterior_draws) {
 }
 
 plot_study <- function(data, posterior_draws) {
+  
+  posterior_draws <- posterior_draws |>
+    mutate(
+      study = case_when(
+        study == "Balachandran, et al. 2017" ~ "Balachandran, et al. 2017 [27]",
+        study == "Buskard, et al. 2019" ~ "Buskard, et al. 2019 [46]",
+        study == "Filho, et al. 2022" ~ "Filho, et al. 2022 [47]",
+        study == "Hanson, et al. 2009" ~ "Hanson, et al. 2009 [48]",
+        study == "Johnen, et al. 2018" ~ "Johnen, et al. 2018 [49]",
+        study == "Lee, et al. 2021" ~ "Lee, et al. 2021  [50]",
+        study == "Moura, et al. 2017" ~ "Moura, et al. 2017 [52]",
+        study == "Pinto, et al. 2014" ~ "Pinto, et al. 2014 [53]",
+        study == "Raj, et al. 2014" ~ "Raj, et al. 2014  [54]",
+        study == "Safons, et al. 2021" ~ "Safons, et al. 2021 [16]",
+        study == "Sayers, et al. 2016" ~ "Sayers, et al. 2016 [56]",
+        study == "Schaun, et al. 2022" ~ "Schaun, et al. 2022 [57]",
+        study == "Schlicht, et al. 2001" ~ "Schlicht, et al. 2001 [58]",
+        study == "Walker, et al. 2017" ~ "Walker, et al. 2017 [59]",
+        study == "Borges-Silva, et al. 2019" ~ "Borges-Silva, et al. 2022 [45]"
+      )
+    )
+  
   study_labels <- posterior_draws |>
     group_by(study, training_control) |>
-    mean_qi(draw)
+    mean_qi(draw) 
+  
+  data <- data |>
+    mutate(
+      study = case_when(
+        study == "Balachandran, et al. 2017" ~ "Balachandran, et al. 2017 [27]",
+        study == "Buskard, et al. 2019" ~ "Buskard, et al. 2019 [46]",
+        study == "Filho, et al. 2022" ~ "Filho, et al. 2022 [47]",
+        study == "Hanson, et al. 2009" ~ "Hanson, et al. 2009 [48]",
+        study == "Johnen, et al. 2018" ~ "Johnen, et al. 2018 [49]",
+        study == "Lee, et al. 2021" ~ "Lee, et al. 2021  [50]",
+        study == "Moura, et al. 2017" ~ "Moura, et al. 2017 [52]",
+        study == "Pinto, et al. 2014" ~ "Pinto, et al. 2014 [53]",
+        study == "Raj, et al. 2014" ~ "Raj, et al. 2014  [54]",
+        study == "Safons, et al. 2021" ~ "Safons, et al. 2021 [16]",
+        study == "Sayers, et al. 2016" ~ "Sayers, et al. 2016 [56]",
+        study == "Schaun, et al. 2022" ~ "Schaun, et al. 2022 [57]",
+        study == "Schlicht, et al. 2001" ~ "Schlicht, et al. 2001 [58]",
+        study == "Walker, et al. 2017" ~ "Walker, et al. 2017 [59]",
+        study == "Borges-Silva, et al. 2019" ~ "Borges-Silva, et al. 2022 [45]"
+      )
+    )
   
   study_pred_plot <- ggplot(posterior_draws, aes(x = draw, 
                                             y = reorder(study, mean_draw), 
